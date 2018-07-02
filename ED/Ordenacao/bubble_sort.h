@@ -1,3 +1,11 @@
+//troca os elementos de posição
+void swap(int *xp, int *yp)
+{
+    int temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+}
+
 //recebe o array que queremos ordenar e seu tamanho
 void bubbleSort(int* A, int size)
 {
@@ -13,9 +21,7 @@ void bubbleSort(int* A, int size)
         {
             if(A[j] > A[j + 1])
             {
-                key = A[j];
-                A[j] = A[j + 1];
-                A[j + 1] = key;
+                swap(&A[j], &A[j+1]);
                 sorted = false;
             }
         }
