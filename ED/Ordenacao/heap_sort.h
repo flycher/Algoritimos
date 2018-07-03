@@ -52,7 +52,8 @@ void build_max_heap(int* A)
 //recebe o array que queremos ordenar e seu tamanho
 void heapSort(int* A, int size)
 {
-    //usamos um array auxiliar para as propriedades de heap começando em 1
+    //usamos um array auxiliar para podermos usar
+    //das propriedades de heap começando em 1
     int i;
     int heap[size + 1]; //o array auxiliar e destruido ao sair da funçao
     heap[0] = size; //guarda o tamanho do heap
