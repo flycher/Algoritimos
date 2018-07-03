@@ -12,7 +12,7 @@ void bubbleSort(int* A, int size)
     int key, i, j;
     bool sorted = false;
 
-    //percorre todos os elementos, caso nenhuma troca aconteca, finaliza o loop
+    //percorre todos os elementos, caso nenhuma troca aconteca finaliza o loop
     for(i = 0; i < size - 1 && !sorted; i++)
     {
         sorted = true;
