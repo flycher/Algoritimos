@@ -46,7 +46,7 @@ void mergeSort(int* A, int p, int r)
 {
     if(p < r) {
         //q recebe o indice do meio no array
-        //chamamos entao mergeSort novamente para o array de inicio ao meio
+        //chamamos entao mergeSort novamente para o array do inicio ao meio
         //e do meio + 1 ao final
         //enfim chamamos merge para o array
         int q = (p + r) / 2;

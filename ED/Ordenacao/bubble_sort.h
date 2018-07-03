@@ -1,9 +1,9 @@
 //troca os elementos de posição
-void swap(int *xp, int *yp)
+void swap(int *a, int *b)
 {
-    int temp = *xp;
-    *xp = *yp;
-    *yp = temp;
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 //recebe o array que queremos ordenar e seu tamanho

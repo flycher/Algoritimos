@@ -17,6 +17,5 @@ void insertionSort(int* A, int size)
 
         //posiciona o elemento em seu lugar correto
         A[i + 1] = key;
-
     }
 }

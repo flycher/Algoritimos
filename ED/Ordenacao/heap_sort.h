@@ -1,4 +1,3 @@
-
 //troca os elementos de posição
 void exchange(int *a, int *b)
 {
@@ -43,7 +42,7 @@ void max_heapify(int* A, int i)
     }
 }
 
-//constroi um heap max a partir de um array
+//constroi um heap de maximo a partir de um array
 void build_max_heap(int* A)
 {
     for(int i = A[0] / 2; i >= 1; i--)
@@ -53,7 +52,7 @@ void build_max_heap(int* A)
 //recebe o array que queremos ordenar e seu tamanho
 void heapSort(int* A, int size)
 {
-    //usamos um array auxiliar para usarmos das propriedades de heap em 1
+    //usamos um array auxiliar para as propriedades de heap começando em 1
     int i;
     int heap[size + 1]; //o array auxiliar e destruido ao sair da funçao
     heap[0] = size; //guarda o tamanho do heap
@@ -63,7 +62,7 @@ void heapSort(int* A, int size)
         heap[i + 1] = A[i];
 
     build_max_heap(heap);
-    //a cada chamada, joga o maior elemento do array para o final
+    //a cada chamada, joga o maior elemento do array para o final do heap
     //considerando como ordenado, e diminui o tamanho do heap
     for(i = size; i >= 2; i--)
     {
@@ -72,7 +71,7 @@ void heapSort(int* A, int size)
         max_heapify(heap, 1);
     }
 
-    //copia os valores de heap para o A
+    //copia os valores de heap para o A, agora ordenados
     for(i = 0; i < size; i++)
         A[i] = heap[i + 1];
 }
