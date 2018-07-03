@@ -8,7 +8,7 @@ void insertionSort(int* A, int size)
         key = A[j];
         i = j - 1;
 
-        //procura a posicao correta do elemento no array
+        //procura a posição correta do elemento no array
         //movendo os elementos maiores para a direita
         while(i >= 0 && A[i] > key){
             A[i + 1] = A[i];
