@@ -27,7 +27,7 @@ int partition(int* A, int p, int r)
 }
 
 //q sera o elemento que dividira em dois subarrays
-//a primeira chamada p recebe 0 e r o tamanho de A
+//a primeira chamada p ser 0 e r o tamanho do array - 1
 void quickSort(int* A, int p, int r)
 {
     if(p < r) {
