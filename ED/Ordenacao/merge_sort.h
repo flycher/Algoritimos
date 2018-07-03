@@ -1,12 +1,12 @@
 //recebe o array, os indices inicial, do meio e final
 void merge(int* A, int p, int q, int r)
 {
-    //n1 o tamanho do subarray da esquerda, n2 o tamanho do subarray da direita
+    //n1 e n2 recebem os tamanhos dos subarray da esquerda e direita
     int n1 = q - p + 1;
     int n2 = r - q;
     int i, j, k;
 
-    //cria os arrays da esquerda e da direita com n1 +1 e n2 + 1 posicoes
+    //cria os arrays da esquerda e da direita com n1 +1 e n2 + 1 posições
     int L[n1 + 1], R[n2 + 1];
 
     //preenchemos os arrays L e R com os subarrays esquerdo e direito de A
@@ -17,7 +17,7 @@ void merge(int* A, int p, int q, int r)
 
     //na ultima posicao prechenchemos com um numero maior possivel do inteiro
     //este representa uma sentinela, para evitar ficar checando
-    //se arrays estao vazios
+    //se arrays estão vazios
     L[n1] = 2147483647;
     R[n2] = 2147483647;
 
