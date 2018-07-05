@@ -19,3 +19,6 @@
 * Pilha
   * LIFO
     * Topo: O(1) | Inserir: O(1) | Remover: O(1)
+* Fila
+  * FIFO
+    * Cabeça: O(1) | Inserir: O(1) | Remover: O(1)
