@@ -16,3 +16,6 @@
     * Ω(n log(n)) | θ(n log(n)) | O(n²)
   * Counting Sort
     * Ω(n) | θ(n) | O(n)
+* Pilha
+  * LIFO
+    * Topo: O(1) | Inserir: O(1) | Remover: O(1)
