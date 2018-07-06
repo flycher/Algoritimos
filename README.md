@@ -22,3 +22,6 @@
 * Fila
   * FIFO
     * Cabeça: O(1) | Inserir: O(1) | Remover: O(1)
+* Lista
+  * Guarda valores, a ordem nods valores não importa
+    * Pegar elemento: O(n) | Inserir: O(1) | Remover: O(n)
