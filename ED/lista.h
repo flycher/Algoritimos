@@ -1,7 +1,7 @@
 #include <iostream>
 
 template <class T>
-struct list
+struct listnode
 {
     int key; //guarda a chave do nó
     T data; //guarda o valor do no
@@ -12,14 +12,14 @@ template <class T>
 class Lista
 {
 private:
-    list<T> *head; //cabeça da lista
+    listnode<T> *head; //cabeça da lista
 public:
     Lista();
     ~Lista();
     bool checkEmpty(); //verifica se a list esta vazia
     void insert(int key, T data); //insere na lista o valor associado a chave
     void remove(int key); //remove da lista pela
-    list<T> getNode(int key); //pega um nó da lista
+    listnode<T> getNode(int key); //pega um nó da lista
     void displayItems(); //exibe os itens guardados na lista
 };
 
@@ -86,7 +86,7 @@ void Lista<T>::displayItems()
     listnode<T> *temp = head->next;
     while(temp != nullptr)
     {
-        std::cout << '(' << temp->key << " , " << temp->data << ')' << '\t';
+        std::cout << "| (" << temp->key << " , " << temp->data << ") |";
         temp = temp->next;
     }
 };
