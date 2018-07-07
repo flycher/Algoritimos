@@ -100,7 +100,6 @@ void BST<T>::rotation(bstnode<T>* u, bstnode<T>* v)
         u->father->right = v;
     if(v != nullptr) //atribui parente se v não for nulo
         v->father = u->father;
-
 };
 
 template <class T>
