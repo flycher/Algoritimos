@@ -5,7 +5,7 @@ struct listnode
 {
     int key; //guarda a chave do nó
     T data; //guarda o valor do no
-    list<T> *next = nullptr; //ponteiro para o próximo no da lista
+    listnode<T> *next = nullptr; //ponteiro para o próximo no da lista
 };
 
 template <class T>
