@@ -1,51 +1,58 @@
 #include <iostream>
 
+template <class T>
 struct bstnode
 {
     int key; //guarda a chave do nó
-    bstnode *father = nullptr, *left = nullptr, *right = nullptr; //pai e filhos
+    T data; //guarda o valor do nó
+    bstnode<T> *father = nullptr, *left = nullptr, *right = nullptr; //pai e filhos
 };
 
+template <class T>
 class BST
 {
 private:
-    bstnode *root; //raiz da arvore
+    bstnode<T> *root; //raiz da arvore
 public:
     BST();
     ~BST();
-    bstnode* getRoot(); //retorna o nó raiz da arvore
-    bstnode* search(int k); //procura o no com chave k na arvore
-    void insert(int k); //insere no com chave k na arvore
-    void rotation(bstnode* u, bstnode* v); //rotação
+    bstnode<T>* getRoot(); //retorna o nó raiz da arvore
+    bstnode<T>* search(int k); //procura o no com chave k na arvore
+    void insert(int k, T d); //insere valor d com chave k na arvore
+    void rotation(bstnode<T>* u, bstnode<T>* v); //rotação
     void remove(int k); //remove nó com chave k da arvore
-    bstnode* minimum(bstnode* r); //retorna no minimo da subarvore
-    bstnode* maximum(bstnode* r); //retorna no maximo da subarvore
-    bstnode* successor(bstnode* r); //retorna sucessor do nó
-    bstnode* predecessor(bstnode* r); //retorna predecessor do nó
-    void inOrder(bstnode* r); //percurso em order
-    void preOrder(bstnode* r); //percurso pre order
-    void postOrder(bstnode* r); //percurso pos order
-    void clearTree(bstnode* r); //libera todos os nós da arvore
+    bstnode<T>* minimum(bstnode<T>* r); //retorna no minimo da subarvore
+    bstnode<T>* maximum(bstnode<T>* r); //retorna no maximo da subarvore
+    bstnode<T>* successor(bstnode<T>* r); //retorna sucessor do nó
+    bstnode<T>* predecessor(bstnode<T>* r); //retorna predecessor do nó
+    void inOrder(bstnode<T>* r); //percurso em order
+    void preOrder(bstnode<T>* r); //percurso pre order
+    void postOrder(bstnode<T>* r); //percurso pos order
+    void clearTree(bstnode<T>* r); //libera todos os nós da arvore
 };
 
-BST::BST()
+template <class T>
+BST<T>::BST()
 {
     root = nullptr;
 };
 
-BST::~BST()
+template <class T>
+BST<T>::~BST()
 {
     clearTree(root);
 };
 
-bstnode* BST::getRoot()
+template <class T>
+bstnode<T>* BST<T>::getRoot()
 {
     return root;
-}
+};
 
-bstnode* BST::search(int k)
+template <class T>
+bstnode<T>* BST<T>::search(int k)
 {
-    bstnode* temp = root;
+    bstnode<T> *temp = root;
     while(temp != nullptr && temp->key != k)
     {
         if(k > temp->key)
@@ -56,14 +63,16 @@ bstnode* BST::search(int k)
     return temp;
 };
 
-void BST::insert(int k)
+template <class T>
+void BST<T>::insert(int k, T d)
 {
-    bstnode *z = new bstnode;
+    bstnode<T> *z = new bstnode<T>;
     z->key = k;
+    z->data = d;
     if(root == nullptr) {
         root = z;
     } else {
-        bstnode *temp = root, *y;
+        bstnode<T> *temp = root, *y;
         while(temp != nullptr)
         {
             y = temp;
@@ -80,7 +89,8 @@ void BST::insert(int k)
     }
 };
 
-void BST::rotation(bstnode* u, bstnode* v)
+template <class T>
+void BST<T>::rotation(bstnode<T>* u, bstnode<T>* v)
 {
     if(u->father == nullptr) //u é a raiz da arvore
         root = v;
@@ -91,17 +101,18 @@ void BST::rotation(bstnode* u, bstnode* v)
     if(v != nullptr) //atribui parente se v não for nulo
         v->father = u->father;
 
-}
+};
 
-void BST::remove(int k)
+template <class T>
+void BST<T>::remove(int k)
 {
-    bstnode *z = search(k); //acha nó com chave k na arvore
+    bstnode<T> *z = search(k); //acha nó com chave k na arvore
     if(z->left == nullptr) //z não tem filho direito
         rotation(z, z->right);
     else if(z->right == nullptr) //z não tem filho esquerdo
         rotation(z, z->left);
     else { //z tem 2 filhos
-        bstnode *y = minimum(z->right); //sucessor de z
+        bstnode<T> *y = minimum(z->right); //sucessor de z
         if(y->father != z) { //se y não for filho direito de z
             //troca y como o filho de seu pai pelo filho direito de y e
             //torna o filho direito de z no filho direito de y
@@ -118,78 +129,86 @@ void BST::remove(int k)
     }
 };
 
-bstnode* BST::minimum(bstnode* r)
+template <class T>
+bstnode<T>* BST<T>::minimum(bstnode<T>* r)
 {
-    bstnode* temp = r;
+    bstnode<T> *temp = r;
     while(temp->left != nullptr)
         temp = temp->left;
     return temp;
 };
 
-bstnode* BST::maximum(bstnode* r)
+template <class T>
+bstnode<T>* BST<T>::maximum(bstnode<T>* r)
 {
-    bstnode* temp = r;
+    bstnode<T> *temp = r;
     while(temp->right != nullptr)
         temp = temp->right;
     return temp;
 };
 
-bstnode* BST::successor(bstnode* r)
+template <class T>
+bstnode<T>* BST<T>::successor(bstnode<T>* r)
 {
-    bstnode* temp = r;
+    bstnode<T> *temp = r;
     if(temp->right != nullptr)
         return minimum(temp->right);
-    bstnode* y = temp->father;
+    bstnode<T>* y = temp->father;
     while(y != nullptr && temp == y->right)
     {
         temp = y;
         y = y->father;
     }
     return y;
-}
+};
 
-bstnode* BST::predecessor(bstnode* r)
+template <class T>
+bstnode<T>* BST<T>::predecessor(bstnode<T>* r)
 {
-    bstnode* temp = r;
+    bstnode<T> *temp = r;
     if(temp->left != nullptr)
         return maximum(temp->left);
-    bstnode* y = temp->father;
+    bstnode<T>* y = temp->father;
     while(y != nullptr && temp == y->left)
     {
         temp = y;
         y = y->father;
     }
     return y;
-}
+};
 
-void BST::inOrder(bstnode* r)
+template <class T>
+void BST<T>::inOrder(bstnode<T>* r)
 {
     if(r != nullptr) {
         inOrder(r->left);
-        std::cout << "| " << r->key << " |";
+        std::cout << "| (" << r->key << ',' << r->data << ") |";
         inOrder(r->right);
     }
 };
 
-void BST::preOrder(bstnode* r)
+template <class T>
+void BST<T>::preOrder(bstnode<T>* r)
 {
     if(r != nullptr) {
-        std::cout << "| " << r->key << " |";
+        std::cout << "| (" << r->key << ',' << r->data << ") |";
         preOrder(r->left);
         preOrder(r->right);
     }
 };
 
-void BST::postOrder(bstnode* r)
+template <class T>
+void BST<T>::postOrder(bstnode<T>* r)
 {
     if(r != nullptr) {
         postOrder(r->left);
         postOrder(r->right);
-        std::cout << "| " << r->key << " |";
+        std::cout << "| (" << r->key << ',' << r->data << ") |";
     }
 };
 
-void BST::clearTree(bstnode* r)
+template <class T>
+void BST<T>::clearTree(bstnode<T>* r)
 {
     if(r != nullptr) {
         clearTree(r->left);

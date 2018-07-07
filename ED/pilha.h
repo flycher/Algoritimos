@@ -1,43 +1,49 @@
 #include <iostream>
 
+template <class T>
 class Pilha
 {
 private:
-    int* stack; //array com elementos na pilha
+    T* stack; //array com elementos na pilha
     int top; //onde no array esta o ultimo elemento
     int size; //tamanho maximo da pilha
 public:
     Pilha(int size); //constroi o array que guarda os elementos
     ~Pilha(); //destroi o array
     bool checkEmpty(); //verifica se a pilha esta vazia
-    int checkTop(); //verifica o topo da pilha
-    void push(int elem); //insere um elemento na pilha
+    T checkTop(); //verifica o topo da pilha
+    void push(T elem); //insere um elemento na pilha
     void pop(); // remove um elemento da pilha
 };
 
-Pilha::Pilha(int size)
+template <class T>
+Pilha<T>::Pilha(int size)
 {
-    this->stack = new int[size];
+    this->stack = new T[size];
     this->top = 0;
     this->size = size;
 };
 
-Pilha::~Pilha()
+template <class T>
+Pilha<T>::~Pilha()
 {
     delete [] stack;
 };
 
-bool Pilha::checkEmpty()
+template <class T>
+bool Pilha<T>::checkEmpty()
 {
     return !top;
 };
 
-int Pilha::checkTop()
+template <class T>
+T Pilha<T>::checkTop()
 {
     return stack[top - 1];
 };
 
-void Pilha::push(int elem)
+template <class T>
+void Pilha<T>::push(T elem)
 {
     if(this->top == this->size)
         std::cerr << "Overflow!\n";
@@ -45,7 +51,8 @@ void Pilha::push(int elem)
         stack[top++] = elem;
 };
 
-void Pilha::pop()
+template <class T>
+void Pilha<T>::pop()
 {
     if(this->checkEmpty())
         std::cerr << "Underflow!\n";

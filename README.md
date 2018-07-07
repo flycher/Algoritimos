@@ -23,8 +23,8 @@
   * FIFO
     * Cabeça: O(1) | Inserir: O(1) | Remover: O(1)
 * Lista
-  * Guarda valores, a ordem dos valores não importa
+  * Guarda valores, onde a ordem dos valores não importa
     * Pegar elemento: O(n) | Inserir: O(1) | Remover: O(n)
 * Árvore Binária de Busca
-  * Guarda valores obedecendo uma hierarquia, ideal que h = log n
+  * Guarda valores mantendo-os em ordem, com o maior a direita e o menor a esquerda
     * Pegar elemento: O(h) | Inserir: O(h) | Remover: O(h)

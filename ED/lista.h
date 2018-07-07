@@ -1,33 +1,38 @@
 #include <iostream>
 
-struct node
+template <class T>
+struct list
 {
-    int data; //guarda o valor no nó
-    node *next = nullptr; //ponteiro para o próximo no da lista
+    int key; //guarda a chave do nó
+    T data; //guarda o valor do no
+    list<T> *next = nullptr; //ponteiro para o próximo no da lista
 };
 
+template <class T>
 class Lista
 {
 private:
-    node *head; //cabeça da lista
+    list<T> *head; //cabeça da lista
 public:
     Lista();
     ~Lista();
     bool checkEmpty(); //verifica se a list esta vazia
-    void insert(int data); //insere na lista
-    void remove(int data); //remove da lista
-    node getNode(int data); //pega um nó da lista
-    void displayData(); //exibe os valores guardados na lista
+    void insert(int key, T data); //insere na lista o valor associado a chave
+    void remove(int key); //remove da lista pela
+    list<T> getNode(int key); //pega um nó da lista
+    void displayItems(); //exibe os itens guardados na lista
 };
 
-Lista::Lista()
+template <class T>
+Lista<T>::Lista()
 {
-    head = new node;
+    head = new listnode<T>;
 };
 
-Lista::~Lista()
+template <class T>
+Lista<T>::~Lista()
 {
-    node *temp = head->next;
+    listnode<T> *temp = head->next;
     while(head->next != nullptr)
     {
         head->next = temp->next;
@@ -37,45 +42,51 @@ Lista::~Lista()
     delete head;
 };
 
-bool Lista::checkEmpty()
+template <class T>
+bool Lista<T>::checkEmpty()
 {
     return head->next == nullptr;
 };
 
-void Lista::insert(int data)
+template <class T>
+void Lista<T>::insert(int key, T data)
 {
-    node *temp = new node;
+    listnode<T> *temp = new listnode<T>;
+    head->key = key;
     head->data = data;
     temp->next = head;
     head = temp;
 };
 
-void Lista::remove(int data)
+template <class T>
+void Lista<T>::remove(int key)
 {
-    node *temp = head;
-    while(temp->next != nullptr && temp->next->data != data)
+    listnode <T>*temp = head;
+    while(temp->next != nullptr && temp->next->key != key)
         temp = temp->next;
     if(temp->next != nullptr) {
-        node *old = temp->next;
+        listnode<T> *old = temp->next;
         temp->next = old->next;
         delete old;
     }
 };
 
-node Lista::getNode(int data)
+template <class T>
+listnode<T> Lista<T>::getNode(int key)
 {
-    node *temp = head->next;
-    while(temp != nullptr && temp->data != data)
+    listnode<T> *temp = head->next;
+    while(temp != nullptr && temp->key != key)
         temp = temp->next;
     return *temp;
 };
 
-void Lista::displayData()
+template <class T>
+void Lista<T>::displayItems()
 {
-    node *temp = head->next;
+    listnode<T> *temp = head->next;
     while(temp != nullptr)
     {
-        std::cout << temp->data << ' ';
+        std::cout << '(' << temp->key << " , " << temp->data << ')' << '\t';
         temp = temp->next;
     }
 };
