@@ -28,3 +28,9 @@
 * Árvore Binária de Busca
   * Guarda valores mantendo-os em ordem, com o maior a direita e o menor a esquerda
     * Pegar elemento: O(h) | Inserir: O(h) | Remover: O(h)
+
+## *Estrutuda de Dados Avançada:*
+
+* Árvore Rubro Negra
+  * Árvore binária em que a altura e mantida sempre proxima de log n
+    * Pegar elemento: O(n log n) | Inserir: O(n log n) | Remover: O(n log n)
