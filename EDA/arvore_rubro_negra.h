@@ -6,9 +6,19 @@ template <class T>
 struct rbtnode
 {
     int key; //guarda a chave do nó
-    T data; //guarda o valor do nó
-    rbtnode<T> *parent, *left, *right; //pai e filhos
+    T data; //guarda o dado do nó
     rbtcolors color; //guarda a cor do nó
+    rbtnode<T> *parent, *left, *right; //pai e filhos
+
+    rbtnode() {};
+
+    rbtnode(int key, T data, rbtcolors color, rbtnode<T> *node)
+    {
+        this->key = key;
+        this->data = data;
+        this->color = color;
+        this->parent = this->left = this->right = node;
+    };
 };
 
 template <class T>
@@ -17,26 +27,27 @@ class RBTree
 private:
     rbtnode<T> *root;
     rbtnode<T> *NIL;
+    void fixrbinsert(rbtnode<T>* node); //corrige as propriedades após inserção
+    void leftrotation(rbtnode<T>* node); //rotação a esquerda
+    void rightrotation(rbtnode<T>* node); //rotação a direita
+    void transplant(rbtnode<T>* u, rbtnode<T>* v); //troca nós de posição
+    void fixrbremove(rbtnode<T>* node); //corrige as propriedades após remoção
+    rbtnode<T>* minimum(rbtnode<T>* node); //retorna no minimo da subarvore
+    rbtnode<T>* maximum(rbtnode<T>* node); //retorna no maximo da subarvore
+    void clearTree(rbtnode<T>* node); //libera todos os nós da arvore
+
 public:
     RBTree();
     ~RBTree();
     rbtnode<T>* getRoot(); //retorna o nó raiz da arvore
-    rbtnode<T>* search(int k); //procura o no com chave k na arvore
-    void insert(int k, T d); //insere valor d com chave k na arvore
-    void fixrbinsert(rbtnode<T>* z); //corrige as propriedades após inserção
-    void leftrotation(rbtnode<T>* x); //rotação a esquerda
-    void rightrotation(rbtnode<T>* y); //rotação a direita
-    void transplant(rbtnode<T>* u, rbtnode<T>* v); //troca nós de posição
-    void remove(int k); //remove nó com chave k da arvore
-    void fixrbremove(rbtnode<T>* x); //corrige as propriedades após remoção
-    rbtnode<T>* minimum(rbtnode<T>* r); //retorna no minimo da subarvore
-    rbtnode<T>* maximum(rbtnode<T>* r); //retorna no maximo da subarvore
-    rbtnode<T>* successor(int k); //retorna sucessor do nó de chave k
-    rbtnode<T>* predecessor(int k); //retorna predecessor do nó de chave k
-    void inOrder(rbtnode<T>* r); //percurso em order
-    void preOrder(rbtnode<T>* r); //percurso pre order
-    void postOrder(rbtnode<T>* r); //percurso pos order
-    void clearTree(rbtnode<T>* r); //libera todos os nós da arvore
+    rbtnode<T>* search(int key); //procura o no com chave key na arvore
+    void insert(int key, T data); //insere dado data com chave key na arvore
+    void remove(int key); //remove nó com chave key da arvore
+    rbtnode<T>* successor(int key); //retorna sucessor do nó de chave key
+    rbtnode<T>* predecessor(int key); //retorna predecessor do nó de chave key
+    void inOrder(rbtnode<T>* node); //percurso em order
+    void preOrder(rbtnode<T>* node); //percurso pre order
+    void postOrder(rbtnode<T>* node); //percurso pos order
     //mostra uma arvore binária formatada. Pelo professor David Sena.
     //https://github.com/senapk/btree_formatada
     void bshow_dual(rbtnode<T>* node, std::string heranca, std::ostream& fout);
@@ -68,127 +79,170 @@ rbtnode<T>* RBTree<T>::getRoot()
 };
 
 template <class T>
-rbtnode<T>* RBTree<T>::search(int k)
+rbtnode<T>* RBTree<T>::search(int key)
 {
     rbtnode<T> *temp = root;
-    while(temp != NIL && temp->key != k)
+
+    while(temp != NIL && temp->key != key)
     {
-        if(k > temp->key)
+        if(key > temp->key)
             temp = temp->right;
         else
             temp = temp->left;
     }
+
     return temp;
 };
 
 template <class T>
-void RBTree<T>::insert(int k, T d)
+void RBTree<T>::insert(int key, T data)
 {
-    rbtnode<T> *z = new rbtnode<T>;
-    z->color = RED;
-    z->data = d;
-    z->key = k;
-    z->parent = NIL;
-    z->left = NIL;
-    z->right = NIL;
-    if(root == NIL) {
-        root = z;
-    } else {
-        rbtnode<T> *temp = root, *y;
+    rbtnode<T> *newnode = new rbtnode<T>(key, data, RED, NIL);
+    bool repeated = false;
+
+    if(root == NIL)
+    {
+        root = newnode;
+        root->color = BLACK;
+    }
+    else
+    {
+        rbtnode<T> *temp = root, *parent;
+
         while(temp != NIL)
         {
-            y = temp;
-            if(k < temp->key)
+            parent = temp;
+
+            if(key == temp->key)
+            {
+                repeated = true;
+                break;
+            }
+
+            if(key < temp->key)
                 temp = temp->left;
             else
                 temp = temp->right;
         }
-        z->parent = y;
-        if(k < y->key)
-            y->left = z;
+
+        if(!repeated)
+        {
+            newnode->parent = parent;
+
+            if(key < parent->key)
+                parent->left = newnode;
+            else
+                parent->right = newnode;
+
+            fixrbinsert(newnode);
+        }
         else
-            y->right = z;
+            std::cerr << "Value already in the tree.\n";
     }
-    fixrbinsert(z);
 };
 
 template <class T>
-void RBTree<T>::fixrbinsert(rbtnode<T>* z)
+void RBTree<T>::fixrbinsert(rbtnode<T>* node)
 {
-    rbtnode<T> *y; //y será o tio de z
-    while(z->parent->color == RED) //verifica a cor do pai de z
+    rbtnode<T> *uncle; //uncle será o tio de node
+
+    while(node->parent->color == RED) //verifica a cor do pai de node
     {
-        if(z->parent == z->parent->parent->left) { //se o pai for filho esquerdo
-            y = z->parent->parent->right; //y recebe o filho direito do avô
-            if(y->color == RED) { //se o tio for vermelho
-                z->parent->color = BLACK; //muda a cor do pai para preto
-                y->color = BLACK; //muda a cor do tio para preto
-                z->parent->parent->color = RED; //muda a cor do avô para vermelho
-                z = z->parent->parent; //tornamos avô de z o novo z
-            } else {
-                if(z == z->parent->right) { //se z for filho direito
-                    z = z->parent; //tornamos pai de z o novo z
-                    leftrotation(z); //rotaciona z a esquerda
-                }
-                z->parent->color = BLACK; //mudamos a cor do parente para preto
-                z->parent->parent->color = RED; //mudamos a cor do avô para vermelho
-                rightrotation(z->parent->parent); //rotaciona o avô de z a direita
+        if(node->parent == node->parent->parent->left) //se o pai for filho esquerdo
+        {
+            uncle = node->parent->parent->right; //uncle recebe o filho direito do avô
+
+            if(uncle->color == RED) //se o tio for vermelho
+            {
+                node->parent->color = BLACK; //muda a cor do pai para preto
+                uncle->color = BLACK; //muda a cor do tio para preto
+                node->parent->parent->color = RED; //muda a cor do avô para vermelho
+                node = node->parent->parent; //tornamos avô de node o novo node
             }
-        } else { //se o pai for filho direito
-            y = z->parent->parent->left; //y recebe o filho esquerdo do avô
-            if(y->color == RED) { //se o tio for vermelho
-                z->parent->color = BLACK; //muda a cor do pai para preto
-                y->color = BLACK; //muda a cor do tio para preto
-                z->parent->parent->color = RED; //muda a cor do avô para vermelho
-                z = z->parent->parent; //tornamos avô de z o novo z
-            } else {
-                if(z == z->parent->left) { //se z for filho esquerdo
-                    z = z->parent; //tornamos pai de z o novo z
-                    rightrotation(z); //rotaciona z a direita
+            else
+            {
+                if(node == node->parent->right) //se node for filho direito
+                {
+                    node = node->parent; //tornamos pai de node o novo node
+                    leftrotation(node); //rotaciona node a esquerda
                 }
-                z->parent->color = BLACK; //mudamos a cor do parente para preto
-                z->parent->parent->color = RED; //mudamos a cor do avô para vermelho
-                leftrotation(z->parent->parent); //rotaciona o avô de z a esquerda
+
+                node->parent->color = BLACK; //mudamos a cor do parente para preto
+                node->parent->parent->color = RED; //mudamos a cor do avô para vermelho
+                rightrotation(node->parent->parent); //rotaciona o avô de node a direita
+            }
+        }
+        else //se o pai for filho direito
+        {
+            uncle = node->parent->parent->left; //uncle recebe o filho esquerdo do avô
+
+            if(uncle->color == RED)  //se o tio for vermelho
+            {
+                node->parent->color = BLACK; //muda a cor do pai para preto
+                uncle->color = BLACK; //muda a cor do tio para preto
+                node->parent->parent->color = RED; //muda a cor do avô para vermelho
+                node = node->parent->parent; //tornamos avô de node o novo node
+            }
+            else
+            {
+                if(node == node->parent->left) //se node for filho esquerdo
+                {
+                    node = node->parent; //tornamos pai de node o novo node
+                    rightrotation(node); //rotaciona node a direita
+                }
+
+                node->parent->color = BLACK; //mudamos a cor do parente para preto
+                node->parent->parent->color = RED; //mudamos a cor do avô para vermelho
+                leftrotation(node->parent->parent); //rotaciona o avô de node a esquerda
             }
         }
     }
+
     root->color = BLACK;
 };
 
 template <class T>
-void RBTree<T>::leftrotation(rbtnode<T>* x)
+void RBTree<T>::leftrotation(rbtnode<T>* node)
 {
-    rbtnode<T> *y = x->right; //atribui a subárvore direita de x a y
-    x->right = y->left; //torna a subárvore esqueda de y na direita de x
-    if(y->left != NIL)
-        y->left->parent = x;
-    y->parent = x->parent; //atribui o parente de x ao parente de y
-    if(x->parent == NIL)
-        root = y;
-    else if(x == x->parent->left)
-        x->parent->left = y;
+    rbtnode<T> *rightchild = node->right; //atribui a subárvore direita de node a rightchild
+    node->right = rightchild->left; //torna a subárvore esqueda de rightchild na direita de node
+
+    if(rightchild->left != NIL)
+        rightchild->left->parent = node;
+
+    rightchild->parent = node->parent; //atribui o parente de node ao parente de rightchild
+
+    if(node->parent == NIL)
+        root = rightchild;
+    else if(node == node->parent->left)
+        node->parent->left = rightchild;
     else
-        x->parent->right = y;
-    y->left = x; //atribui x a esquerda de y
-    x->parent = y; //torna y pai de x
+        node->parent->right = rightchild;
+
+    rightchild->left = node; //atribui node a esquerda de rightchild
+    node->parent = rightchild; //torna rightchild pai de node
 };
 
 template <class T>
-void RBTree<T>::rightrotation(rbtnode<T>* y)
+void RBTree<T>::rightrotation(rbtnode<T>* node)
 {
-    rbtnode<T> *x = y->left; //atribui a subárvore esquerda de y a x
-    y->left = x->right; //torna a subárvore direita de x na direita de y
-    if(x->right != NIL)
-        x->right->parent = x;
-    x->parent = y->parent; //atribui o parente de y ao parente de x
-    if(y->parent == NIL)
-        root = x;
-    else if(y == y->parent->left)
-        y->parent->left = x;
+    rbtnode<T> *leftchild = node->left; //atribui a subárvore esquerda de node a leftchild
+    node->left = leftchild->right; //torna a subárvore direita de leftchild na direita de node
+
+    if(leftchild->right != NIL)
+        leftchild->right->parent = leftchild;
+
+    leftchild->parent = node->parent; //atribui o parente de node ao parente de leftchild
+
+    if(node->parent == NIL)
+        root = leftchild;
+    else if(node == node->parent->left)
+        node->parent->left = leftchild;
     else
-        y->parent->right = x;
-    x->right = y; //atribui y a direita de x
-    y->parent = x; //torna x pai de y
+        node->parent->right = leftchild;
+
+    leftchild->right = node; //atribui node a direita de leftchild
+    node->parent = leftchild; //torna leftchild pai de node
 };
 
 template <class T>
@@ -200,187 +254,236 @@ void RBTree<T>::transplant(rbtnode<T>* u, rbtnode<T>* v)
         u->parent->left = v;
     else
         u->parent->right = v;
+
     v->parent = u->parent;
 };
 
 template <class T>
-void RBTree<T>::remove(int k)
+void RBTree<T>::remove(int key)
 {
-    rbtnode<T> *z = search(k);
-    rbtnode<T> *y = z, *x; //y sera o no a ser removido ou o que substirui z
-    rbtcolors y_original_color = y->color; //a cor de y pode ser alterada
-    if(z->left == NIL) { //caso z nao tenha filho esquerdo
-        x = z->right; //caso z tenha um filho direito
-        transplant(z, z->right); //mudamos z e o filho direito de posição
-    } else if(z->right == NIL) { //caso z nao tenha filho direito
-        x = z->left; //caso z tenha um filho esquerdo
-        transplant(z, z->left); //mudamos z e o filho esquerdo de posição
-    } else { //caso z tenha os 2 filhos
-        y = minimum(z->right); //y assumira o lugar de z
-        y_original_color = y->color; //guarda novamente a cor ao alterar o y
-        x = y->right; //caso y tenha um filho, ele ocupara o lugar de y
-        if(y->parent == z)
-            x->parent = z;
-        else {
-            transplant(y, y->right);
-            y->right = z->right;
-            y->right->parent = y;
-        }
-        transplant(z, y);
-        y->left = z->left;
-        y->left->parent = y;
-        y->color = z->color;
-    }
-    delete z;
-    if(y_original_color == BLACK) //pode causar violações nas propriedades
-        fixrbremove(x);
+    rbtnode<T> *old = search(key);
 
-};
-
-template <class T>
-void RBTree<T>::fixrbremove(rbtnode<T>* x)
-{
-    rbtnode<T> *w; //w sera o irmão de x
-    while(x != root && x->color == BLACK)
+    if(old == NIL)
+        std::cerr << "Value not in the tree.\n";
+    else
     {
-        if(x == x->parent->left) { //caso x seja filho esquerdo
-            w = x->parent->right; //w sera o filho direito
-            if(w->color == RED) { //irmão tem cor vermelha
-                w->color = BLACK; //muda cor do irmao
-                x->parent->color = RED; //muda cor do pai
-                leftrotation(x->parent); //rotaciona o pai a esquerda
-                w = x->parent->right;
-            }
-            if(w->left->color == BLACK && w->right->color == BLACK) {
-                w->color = RED; //caso os filhos de w sejam pretos, mudamos sua cor
-                x = x->parent;
-            } else {
-                if(w->right->color == BLACK) { //apenas o filho direito e preto
-                    w->left->color = BLACK;
-                    w->color = RED;
-                    rightrotation(w);
-                    w = w->parent->right;
-                }
-                w->color = x->parent->color;
-                x->parent->color = BLACK;
-                w->right->color = BLACK;
-                leftrotation(x->parent);
-                x = root;
-            }
-        } else { //caso x seja filho direito
-            w = x->parent->left; //w sera o filho esquerdo
-            if(w->color == RED) { //irmão tem cor vermelha
-                w->color = BLACK; //muda cor do irmao
-                x->parent->color = RED; //muda cor do pai
-                rightrotation(x->parent); //rotaciona o pai a direita
-                w = x->parent->left;
-            }
-            if(w->right->color == BLACK && w->left->color == BLACK) {
-                w->color = RED; //caso os filhos de w sejam pretos, mudamos sua cor
-                x = x->parent;
-            } else {
-                if(w->left->color == BLACK) { //apenas o filho esquerdo e preto
-                    w->right->color = BLACK;
-                    w->color = RED;
-                    leftrotation(w);
-                    w = w->parent->left;
-                }
-                w->color = x->parent->color;
-                x->parent->color = BLACK;
-                w->left->color = BLACK;
-                rightrotation(x->parent);
-                x = root;
-            }
+        rbtnode<T> *sub = old, *replacement; //sub será o nó a ser removido ou o que substituirá old
+        rbtcolors sub_original_color = sub->color; //a cor de sub pode ser alterada
+
+        if(old->left == NIL) //caso old nao tenha filho esquerdo
+        {
+            replacement = old->right; //caso old tenha um filho direito
+            transplant(old, old->right); //mudamos old e o filho direito de posição
         }
+        else if(old->right == NIL) //caso old nao tenha filho direito
+        {
+            replacement = old->left; //caso old tenha um filho esquerdo
+            transplant(old, old->left); //mudamos old e o filho esquerdo de posição
+        }
+        else //caso old tenha os 2 filhos
+        {
+            sub = minimum(old->right); //sub assumira o lugar de old
+            sub_original_color = sub->color; //guarda novamente a cor ao alterar o sub
+            replacement = sub->right; //caso sub tenha um filho, ele ocupara o lugar de sub
+
+            if(sub->parent == old)
+                replacement->parent = old;
+            else
+            {
+                transplant(sub, sub->right);
+                sub->right = old->right;
+                sub->right->parent = sub;
+            }
+
+            transplant(old, sub);
+            sub->left = old->left;
+            sub->left->parent = sub;
+            sub->color = old->color;
+        }
+
+        delete old;
+
+        if(sub_original_color == BLACK) //pode causar violações nas propriedades
+            fixrbremove(replacement);
     }
-    x->color = BLACK;
 };
 
 template <class T>
-rbtnode<T>* RBTree<T>::minimum(rbtnode<T>* r)
+void RBTree<T>::fixrbremove(rbtnode<T>* node)
 {
-    rbtnode<T> *temp = r;
+    rbtnode<T> *brother; //brother sera o irmão de node
+
+    while(node != root && node->color == BLACK)
+    {
+        if(node == node->parent->left) //caso node seja filho esquerdo
+        {
+            brother = node->parent->right; //brother sera o filho direito
+
+            if(brother->color == RED) //irmão tem cor vermelha
+            {
+                brother->color = BLACK; //muda cor do irmao
+                node->parent->color = RED; //muda cor do pai
+                leftrotation(node->parent); //rotaciona o pai a esquerda
+                brother = node->parent->right;
+            }
+
+            if(brother->left->color == BLACK && brother->right->color == BLACK)
+            {
+                brother->color = RED; //caso os filhos de brother sejam pretos, mudamos sua cor
+                node = node->parent;
+            }
+            else
+            {
+                if(brother->right->color == BLACK)  //apenas o filho direito e preto
+                {
+                    brother->left->color = BLACK;
+                    brother->color = RED;
+                    rightrotation(brother);
+                    brother = brother->parent->right;
+                }
+
+                brother->color = node->parent->color;
+                node->parent->color = BLACK;
+                brother->right->color = BLACK;
+                leftrotation(node->parent);
+                node = root;
+            }
+        }
+        else //caso node seja filho direito
+        {
+            brother = node->parent->left; //brother sera o filho esquerdo
+
+            if(brother->color == RED) //irmão tem cor vermelha
+            {
+                brother->color = BLACK; //muda cor do irmao
+                node->parent->color = RED; //muda cor do pai
+                rightrotation(node->parent); //rotaciona o pai a direita
+                brother = node->parent->left;
+            }
+
+            if(brother->right->color == BLACK && brother->left->color == BLACK)
+            {
+                brother->color = RED; //caso os filhos de brother sejam pretos, mudamos sua cor
+                node = node->parent;
+            }
+            else
+            {
+                if(brother->left->color == BLACK)  //apenas o filho esquerdo e preto
+                {
+                    brother->right->color = BLACK;
+                    brother->color = RED;
+                    leftrotation(brother);
+                    brother = brother->parent->left;
+                }
+
+                brother->color = node->parent->color;
+                node->parent->color = BLACK;
+                brother->left->color = BLACK;
+                rightrotation(node->parent);
+                node = root;
+            }
+        }
+    }
+
+    node->color = BLACK;
+};
+
+template <class T>
+rbtnode<T>* RBTree<T>::minimum(rbtnode<T>* node)
+{
+    rbtnode<T> *temp = node;
+
     while(temp->left != NIL)
         temp = temp->left;
+
     return temp;
 };
 
 template <class T>
-rbtnode<T>* RBTree<T>::maximum(rbtnode<T>* r)
+rbtnode<T>* RBTree<T>::maximum(rbtnode<T>* node)
 {
-    rbtnode<T> *temp = r;
+    rbtnode<T> *temp = node;
+
     while(temp->right != NIL)
         temp = temp->right;
+
     return temp;
 };
 
 template <class T>
-rbtnode<T>* RBTree<T>::successor(int k)
+rbtnode<T>* RBTree<T>::successor(int key)
 {
-    rbtnode<T> *temp = search(k);
+    rbtnode<T> *temp = search(key);
+
     if(temp->right != NIL)
         return minimum(temp->right);
-    rbtnode<T>* y = temp->parent;
-    while(y != NIL && temp == y->right)
+
+    rbtnode<T>* pred = temp->parent;
+
+    while(pred != NIL && temp == pred->right)
     {
-        temp = y;
-        y = y->parent;
+        temp = pred;
+        pred = pred->parent;
     }
-    return y;
+
+    return pred;
 };
 
 template <class T>
-rbtnode<T>* RBTree<T>::predecessor(int k)
+rbtnode<T>* RBTree<T>::predecessor(int key)
 {
-    rbtnode<T> *temp = search(k);
+    rbtnode<T> *temp = search(key);
+
     if(temp->left != NIL)
         return maximum(temp->left);
-    rbtnode<T>* y = temp->parent;
-    while(y != NIL && temp == y->left)
+
+    rbtnode<T>* pred = temp->parent;
+
+    while(pred != NIL && temp == pred->left)
     {
-        temp = y;
-        y = y->parent;
+        temp = pred;
+        pred = pred->parent;
     }
-    return y;
+    return pred;
 };
 
 template <class T>
-void RBTree<T>::inOrder(rbtnode<T>* r)
+void RBTree<T>::inOrder(rbtnode<T>* node)
 {
-    if(r != NIL) {
-        inOrder(r->left);
-        std::cout << "| (" << r->key << ',' << r->color << ") |";
-        inOrder(r->right);
-    }
-};
-
-template <class T>
-void RBTree<T>::preOrder(rbtnode<T>* r)
-{
-    if(r != NIL) {
-        std::cout << "| (" << r->key << ',' << r->color << ") |";
-        preOrder(r->left);
-        preOrder(r->right);
+    if(node != NIL) {
+        inOrder(node->left);
+        std::cout << "| " << node->key << ',' << node->color << " |";
+        inOrder(node->right);
     }
 };
 
 template <class T>
-void RBTree<T>::postOrder(rbtnode<T>* r)
+void RBTree<T>::preOrder(rbtnode<T>* node)
 {
-    if(r != NIL) {
-        postOrder(r->left);
-        postOrder(r->right);
-        std::cout << "| (" << r->key << ',' << r->color << ") |";
+    if(node != NIL) {
+        std::cout << "| " << node->key << ',' << node->color << " |";
+        preOrder(node->left);
+        preOrder(node->right);
     }
 };
 
 template <class T>
-void RBTree<T>::clearTree(rbtnode<T>* r)
+void RBTree<T>::postOrder(rbtnode<T>* node)
 {
-    if(r != NIL) {
-        clearTree(r->left);
-        clearTree(r->right);
-        delete r;
+    if(node != NIL) {
+        postOrder(node->left);
+        postOrder(node->right);
+        std::cout << "| " << node->key << ',' << node->color << " |";
+    }
+};
+
+template <class T>
+void RBTree<T>::clearTree(rbtnode<T>* node)
+{
+    if(node != NIL) {
+        clearTree(node->left);
+        clearTree(node->right);
+        delete node;
     }
 };
 
@@ -389,24 +492,33 @@ void RBTree<T>::bshow_dual(rbtnode<T>* node, std::string heranca, std::ostream& 
 {
     if(node != NIL && (node->left != NIL || node->right != NIL))
         bshow_dual(node->right , heranca + "r", fout);
+
     int tam = heranca.size();
-    for(int i = 0; i < tam - 1; i++) {
+
+    for(int i = 0; i < tam - 1; i++)
+    {
         if(heranca[i] != heranca[i + 1])
             fout << "│" << "   ";
         else
             fout << " " << "   ";
     }
-    if(heranca != "") {
+
+    if(heranca != "")
+    {
         if(heranca.back() == 'r')
             fout << "┌───";
         else
             fout << "└───";
     }
-    if(node == NIL) {
+
+    if(node == NIL)
+    {
         fout << "#" << std::endl;
         return;
     }
+
     fout << node->key << ',' << node->color << std::endl;
+
     if(node != NIL && (node->left != NIL || node->right != NIL))
         bshow_dual(node->left, heranca + "l", fout);
 }

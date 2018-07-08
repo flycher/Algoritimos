@@ -4,214 +4,308 @@ template <class T>
 struct bstnode
 {
     int key; //guarda a chave do nó
-    T data; //guarda o valor do nó
-    bstnode<T> *father = nullptr, *left = nullptr, *right = nullptr; //pai e filhos
+    T data; //guarda o dado do nó
+    bstnode<T> *parent, *left, *right; //pai e filhos
+
+    bstnode() {};
+
+    bstnode(int key, T data, bstnode<T> *node)
+    {
+        this->key = key;
+        this->data = data;
+        this->parent = this->left = this->right = node;
+    };
 };
 
 template <class T>
-class BST
+class BSTree
 {
 private:
     bstnode<T> *root; //raiz da arvore
+    void transplant(bstnode<T>* u, bstnode<T>* v); //troca nós de posição
+    bstnode<T>* minimum(bstnode<T>* node); //retorna no minimo da subarvore
+    bstnode<T>* maximum(bstnode<T>* node); //retorna no maximo da subarvore
+    void clearTree(bstnode<T>* node); //libera todos os nós da arvore
+
 public:
-    BST();
-    ~BST();
+    BSTree(); //inicializa a saiz da árvore
+    ~BSTree(); //libera os nós da memória
     bstnode<T>* getRoot(); //retorna o nó raiz da arvore
-    bstnode<T>* search(int k); //procura o no com chave k na arvore
-    void insert(int k, T d); //insere valor d com chave k na arvore
-    void rotation(bstnode<T>* u, bstnode<T>* v); //rotação
-    void remove(int k); //remove nó com chave k da arvore
-    bstnode<T>* minimum(bstnode<T>* r); //retorna no minimo da subarvore
-    bstnode<T>* maximum(bstnode<T>* r); //retorna no maximo da subarvore
-    bstnode<T>* successor(bstnode<T>* r); //retorna sucessor do nó
-    bstnode<T>* predecessor(bstnode<T>* r); //retorna predecessor do nó
-    void inOrder(bstnode<T>* r); //percurso em order
-    void preOrder(bstnode<T>* r); //percurso pre order
-    void postOrder(bstnode<T>* r); //percurso pos order
-    void clearTree(bstnode<T>* r); //libera todos os nós da arvore
+    bstnode<T>* search(int key); //procura o no com chave k na arvore
+    void insert(int key, T data); //insere dado d com chave k na arvore
+    void remove(int key); //remove nó com chave k da arvore
+    bstnode<T>* successor(int key); //retorna sucessor do nó de chave k
+    bstnode<T>* predecessor(int key); //retorna predecessor do nó de chave k
+    void inOrder(bstnode<T>* node); //percurso em ordem
+    void preOrder(bstnode<T>* node); //percurso pre ordem
+    void postOrder(bstnode<T>* node); //percurso pos ordem
+    //mostra uma arvore binária formatada. Pelo professor David Sena.
+    //https://github.com/senapk/btree_formatada
+    void bshow_dual(bstnode<T>* node, std::string heranca, std::ostream& fout);
 };
 
 template <class T>
-BST<T>::BST()
+BSTree<T>::BSTree()
 {
-    root = nullptr;
+    this->root = nullptr;
 };
 
 template <class T>
-BST<T>::~BST()
+BSTree<T>::~BSTree()
 {
-    clearTree(root);
+    clearTree(this->root);
 };
 
 template <class T>
-bstnode<T>* BST<T>::getRoot()
+bstnode<T>* BSTree<T>::getRoot()
 {
     return root;
 };
 
 template <class T>
-bstnode<T>* BST<T>::search(int k)
+bstnode<T>* BSTree<T>::search(int key)
 {
     bstnode<T> *temp = root;
-    while(temp != nullptr && temp->key != k)
+
+    while(temp != nullptr && temp->key != key)
     {
-        if(k > temp->key)
+        if(key > temp->key)
             temp = temp->right;
         else
             temp = temp->left;
     }
+
     return temp;
 };
 
 template <class T>
-void BST<T>::insert(int k, T d)
+void BSTree<T>::insert(int key, T data)
 {
-    bstnode<T> *z = new bstnode<T>;
-    z->key = k;
-    z->data = d;
-    if(root == nullptr) {
-        root = z;
-    } else {
-        bstnode<T> *temp = root, *y;
+    bstnode<T> *newnode = new bstnode<T>(key, data, nullptr);
+    bool repeated = false;
+
+    if(root == nullptr)
+    {
+        root = newnode;
+    }
+    else
+    {
+        bstnode<T> *temp = root, *parent;
+
         while(temp != nullptr)
         {
-            y = temp;
-            if(k > temp->key)
+            parent = temp;
+
+            if(key == temp->key)
+            {
+                repeated = true;
+                break;
+            }
+
+            if(key > temp->key)
                 temp = temp->right;
             else
                 temp = temp->left;
         }
-        z->father = y;
-        if(k > y->key)
-            y->right = z;
-        else
-            y->left = z;
-    }
-};
 
-template <class T>
-void BST<T>::rotation(bstnode<T>* u, bstnode<T>* v)
-{
-    if(u->father == nullptr) //u é a raiz da arvore
-        root = v;
-    else if(u == u->father->left) //u é filho esquerdo
-        u->father->left = v;
-    else //u é filho direito
-        u->father->right = v;
-    if(v != nullptr) //atribui parente se v não for nulo
-        v->father = u->father;
-};
+        if(!repeated)
+        {
+            newnode->parent = parent;
 
-template <class T>
-void BST<T>::remove(int k)
-{
-    bstnode<T> *z = search(k); //acha nó com chave k na arvore
-    if(z->left == nullptr) //z não tem filho direito
-        rotation(z, z->right);
-    else if(z->right == nullptr) //z não tem filho esquerdo
-        rotation(z, z->left);
-    else { //z tem 2 filhos
-        bstnode<T> *y = minimum(z->right); //sucessor de z
-        if(y->father != z) { //se y não for filho direito de z
-            //troca y como o filho de seu pai pelo filho direito de y e
-            //torna o filho direito de z no filho direito de y
-            rotation(y, y->right);
-            y->right = z->right;
-            y->right->father = y;
+            if(key > parent->key)
+                parent->right = newnode;
+            else
+                parent->left = newnode;
         }
-        //troca z como o filho de seu pai por y e
-        //troca o filho direito de y pelo filho direito de z
-        rotation(z, y);
-        y->left = z->left;
-        y->left->father = y;
-        delete z;
+        else
+            std::cerr << "Value already in the tree.\n";
     }
 };
 
 template <class T>
-bstnode<T>* BST<T>::minimum(bstnode<T>* r)
+void BSTree<T>::transplant(bstnode<T>* u, bstnode<T>* v)
 {
-    bstnode<T> *temp = r;
+    if(u->parent == nullptr) //u é a raiz da arvore
+        root = v;
+    else if(u == u->parent->left) //u é filho esquerdo
+        u->parent->left = v;
+    else //u é filho direito
+        u->parent->right = v;
+    if(v != nullptr) //atribui parente se v não for nulo
+        v->parent = u->parent;
+};
+
+template <class T>
+void BSTree<T>::remove(int key)
+{
+    bstnode<T> *old = search(key); //acha nó com chave k na arvore
+
+    if(old == nullptr)
+        std::cerr << "Value not in the tree.\n";
+    else
+    {
+        if(old->left == nullptr) //old não tem filho direito
+            transplant(old, old->right);
+        else if(old->right == nullptr) //old não tem filho esquerdo
+            transplant(old, old->left);
+        else //old tem 2 filhos
+        {
+            bstnode<T> *replacement = minimum(old->right); //sucessor de old
+
+            if(replacement->parent != old) //se replacement não for filho direito de old
+            {
+                //troca replacement como o filho de seu pai pelo filho direito de replacement
+                //e torna o filho direito de old no filho direito de replacement
+                transplant(replacement, replacement->right);
+                replacement->right = old->right;
+                replacement->right->parent = replacement;
+            }
+            //troca old como o filho de seu pai por replacement e
+            //troca o filho direito de replacement pelo filho direito de old
+            transplant(old, replacement);
+            replacement->left = old->left;
+            replacement->left->parent = replacement;
+            delete old;
+        }
+    }
+};
+
+template <class T>
+bstnode<T>* BSTree<T>::minimum(bstnode<T>* node)
+{
+    bstnode<T> *temp = node;
+
     while(temp->left != nullptr)
         temp = temp->left;
+
     return temp;
 };
 
 template <class T>
-bstnode<T>* BST<T>::maximum(bstnode<T>* r)
+bstnode<T>* BSTree<T>::maximum(bstnode<T>* node)
 {
-    bstnode<T> *temp = r;
+    bstnode<T> *temp = node;
+
     while(temp->right != nullptr)
         temp = temp->right;
+
     return temp;
 };
 
 template <class T>
-bstnode<T>* BST<T>::successor(bstnode<T>* r)
+bstnode<T>* BSTree<T>::successor(int key)
 {
-    bstnode<T> *temp = r;
+    bstnode<T> *temp = search(key);
+
     if(temp->right != nullptr)
         return minimum(temp->right);
-    bstnode<T>* y = temp->father;
-    while(y != nullptr && temp == y->right)
+
+    bstnode<T>* succ = temp->parent;
+
+    while(succ != nullptr && temp == succ->right)
     {
-        temp = y;
-        y = y->father;
+        temp = succ;
+        succ = succ->parent;
     }
-    return y;
+
+    return succ;
 };
 
 template <class T>
-bstnode<T>* BST<T>::predecessor(bstnode<T>* r)
+bstnode<T>* BSTree<T>::predecessor(int key)
 {
-    bstnode<T> *temp = r;
+    bstnode<T> *temp = search(key);
+
     if(temp->left != nullptr)
         return maximum(temp->left);
-    bstnode<T>* y = temp->father;
-    while(y != nullptr && temp == y->left)
+
+    bstnode<T>* pred = temp->parent;
+
+    while(pred != nullptr && temp == pred->left)
     {
-        temp = y;
-        y = y->father;
+        temp = pred;
+        pred = pred->parent;
     }
-    return y;
+
+    return pred;
 };
 
 template <class T>
-void BST<T>::inOrder(bstnode<T>* r)
+void BSTree<T>::inOrder(bstnode<T>* node)
 {
-    if(r != nullptr) {
-        inOrder(r->left);
-        std::cout << "| (" << r->key << ',' << r->data << ") |";
-        inOrder(r->right);
-    }
-};
-
-template <class T>
-void BST<T>::preOrder(bstnode<T>* r)
-{
-    if(r != nullptr) {
-        std::cout << "| (" << r->key << ',' << r->data << ") |";
-        preOrder(r->left);
-        preOrder(r->right);
+    if(node != nullptr)
+    {
+        inOrder(node->left);
+        std::cout << "| " << node->key << ',' << node->data << " |";
+        inOrder(node->right);
     }
 };
 
 template <class T>
-void BST<T>::postOrder(bstnode<T>* r)
+void BSTree<T>::preOrder(bstnode<T>* node)
 {
-    if(r != nullptr) {
-        postOrder(r->left);
-        postOrder(r->right);
-        std::cout << "| (" << r->key << ',' << r->data << ") |";
+    if(node != nullptr)
+    {
+        std::cout << "| " << node->key << ',' << node->data << " |";
+        preOrder(node->left);
+        preOrder(node->right);
     }
 };
 
 template <class T>
-void BST<T>::clearTree(bstnode<T>* r)
+void BSTree<T>::postOrder(bstnode<T>* node)
 {
-    if(r != nullptr) {
-        clearTree(r->left);
-        clearTree(r->right);
-        delete r;
+    if(node != nullptr)
+    {
+        postOrder(node->left);
+        postOrder(node->right);
+        std::cout << "| " << node->key << ',' << node->data << " |";
     }
+};
+
+template <class T>
+void BSTree<T>::clearTree(bstnode<T>* node)
+{
+    if(node != nullptr)
+    {
+        clearTree(node->left);
+        clearTree(node->right);
+        delete node;
+    }
+};
+
+template <class T>
+void BSTree<T>::bshow_dual(bstnode<T>* node, std::string heranca, std::ostream& fout)
+{
+    if(node != nullptr && (node->left != nullptr || node->right != nullptr))
+        bshow_dual(node->right , heranca + "r", fout);
+
+    int tam = heranca.size();
+
+    for(int i = 0; i < tam - 1; i++)
+    {
+        if(heranca[i] != heranca[i + 1])
+            fout << "│" << "   ";
+        else
+            fout << " " << "   ";
+    }
+
+    if(heranca != "")
+    {
+        if(heranca.back() == 'r')
+            fout << "┌───";
+        else
+            fout << "└───";
+    }
+
+    if(node == nullptr)
+    {
+        fout << "#" << std::endl;
+        return;
+    }
+
+    fout << node->key << std::endl;
+
+    if(node != nullptr && (node->left != nullptr || node->right != nullptr))
+        bshow_dual(node->left, heranca + "l", fout);
 };

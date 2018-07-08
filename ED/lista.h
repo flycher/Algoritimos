@@ -3,9 +3,8 @@
 template <class T>
 struct listnode
 {
-    int key; //guarda a chave do nó
-    T data; //guarda o valor do no
-    listnode<T> *next = nullptr; //ponteiro para o próximo no da lista
+    T data; //guarda o dado do nó
+    listnode<T> *next = nullptr; //ponteiro para o próximo nó da lista
 };
 
 template <class T>
@@ -13,20 +12,22 @@ class Lista
 {
 private:
     listnode<T> *head; //cabeça da lista
+
 public:
     Lista();
     ~Lista();
-    bool checkEmpty(); //verifica se a list esta vazia
-    void insert(int key, T data); //insere na lista o valor associado a chave
-    void remove(int key); //remove da lista pela
-    listnode<T> getNode(int key); //pega um nó da lista
+    bool checkEmpty(); //verifica se a lista esta vazia
+    void insert(T data); //insere o item na lista
+    void remove(T data); //remove o item da lista
+    listnode<T> getNode(T data); //pega um nó da lista
     void displayItems(); //exibe os itens guardados na lista
+    void listshow();
 };
 
 template <class T>
 Lista<T>::Lista()
 {
-    head = new listnode<T>;
+    this->head = new listnode<T>;
 };
 
 template <class T>
@@ -39,32 +40,34 @@ Lista<T>::~Lista()
         delete temp;
         temp = head->next;
     }
-    delete head;
+    delete this->head;
 };
 
 template <class T>
 bool Lista<T>::checkEmpty()
 {
-    return head->next == nullptr;
+    return (head->next == nullptr);
 };
 
 template <class T>
-void Lista<T>::insert(int key, T data)
+void Lista<T>::insert(T data)
 {
     listnode<T> *temp = new listnode<T>;
-    head->key = key;
-    head->data = data;
-    temp->next = head;
-    head = temp;
+    head->data  = data;
+    temp->next  = head;
+    head        = temp;
 };
 
 template <class T>
-void Lista<T>::remove(int key)
+void Lista<T>::remove(T data)
 {
-    listnode <T>*temp = head;
-    while(temp->next != nullptr && temp->next->key != key)
+    listnode<T> *temp = head;
+
+    while(temp->next != nullptr && temp->next->data != data)
         temp = temp->next;
-    if(temp->next != nullptr) {
+
+    if(temp->next != nullptr)
+    {
         listnode<T> *old = temp->next;
         temp->next = old->next;
         delete old;
@@ -72,11 +75,13 @@ void Lista<T>::remove(int key)
 };
 
 template <class T>
-listnode<T> Lista<T>::getNode(int key)
+listnode<T> Lista<T>::getNode(T data)
 {
     listnode<T> *temp = head->next;
-    while(temp != nullptr && temp->key != key)
+
+    while(temp != nullptr && temp->data != data)
         temp = temp->next;
+
     return *temp;
 };
 
@@ -84,9 +89,24 @@ template <class T>
 void Lista<T>::displayItems()
 {
     listnode<T> *temp = head->next;
+
     while(temp != nullptr)
     {
-        std::cout << "| (" << temp->key << " , " << temp->data << ") |";
+        std::cout << "| " << temp->data << " |";
         temp = temp->next;
     }
+};
+
+template <class T>
+void Lista<T>::listshow()
+{
+    listnode<T> *temp = head->next;
+
+    while(temp != nullptr)
+    {
+        std::cout << "[ " << temp->data << " |-]-> ";
+        temp = temp->next;
+    }
+
+    std::cout << "NULL";
 };

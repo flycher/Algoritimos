@@ -7,6 +7,7 @@ private:
     T* stack; //array com elementos na pilha
     int top; //onde no array esta o ultimo elemento
     int size; //tamanho maximo da pilha
+
 public:
     Pilha(int size); //constroi o array que guarda os elementos
     ~Pilha(); //destroi o array
@@ -27,7 +28,7 @@ Pilha<T>::Pilha(int size)
 template <class T>
 Pilha<T>::~Pilha()
 {
-    delete [] stack;
+    delete [] this->stack;
 };
 
 template <class T>
