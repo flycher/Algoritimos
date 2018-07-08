@@ -34,3 +34,6 @@
 * Árvore Rubro Negra
   * Árvore binária em que a altura e mantida sempre proxima de log n
     * Buscar: O(n log n) | Inserir: O(n log n) | Remover: O(n log n)
+* Tabela de Dispersão
+  * Associa chaves de pesquisa a valores com objetivo de fazer uma busca rápida a partir da chave.
+    * Buscar: θ(1) / O(n) | Inserir: O(1) | Remover: θ(1) / O(n)
