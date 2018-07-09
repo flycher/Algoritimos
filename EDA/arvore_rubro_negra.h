@@ -1,6 +1,6 @@
 #include <iostream>
 
-enum rbtcolors { RED, BLACK};
+enum rbtcolors { RED, BLACK };
 
 template <class T>
 struct rbtnode
@@ -230,7 +230,7 @@ void RBTree<T>::rightrotation(rbtnode<T>* node)
     node->left = leftchild->right; //torna a subárvore direita de leftchild na direita de node
 
     if(leftchild->right != NIL)
-        leftchild->right->parent = leftchild;
+        leftchild->right->parent = node;
 
     leftchild->parent = node->parent; //atribui o parente de node ao parente de leftchild
 
