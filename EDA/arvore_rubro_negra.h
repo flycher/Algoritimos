@@ -481,9 +481,10 @@ template <class T>
 void RBTree<T>::clearTree(rbtnode<T>* node)
 {
     if(node != NIL) {
+        bstnode<T> *left = node->left, right = node->right;
+        delete node;
         clearTree(node->left);
         clearTree(node->right);
-        delete node;
     }
 };
 

@@ -2,16 +2,31 @@
 #include<climits>
 
 template <class T>
+struct heapnode
+{
+    int key;
+    T data;
+
+    heapnode() {};
+
+    heapnode(int key, T data)
+    {
+        this->key = key;
+        this->data = data;
+    }
+};
+
+template <class T>
 class HeapMin
 {
 private:
-    T *priority_queue; //array que guardara os elementos do heap
+    heapnode<T> *priority_queue; //array que guardara os elementos do heap
     int size; //tamanho maximo do heap
     int heap_size; //quantidade de elementos no heap
 
-    void exchange(T *a, T *b) //troca nós de posição
+    void exchange(heapnode<T> *a, heapnode<T> *b) //troca nós de posição
     {
-        T temp = *a;
+        heapnode<T> temp = *a;
         *a = *b;
         *b = temp;
     };
@@ -57,7 +72,7 @@ public:
     HeapMin(int size)
     {
         this->size = size;
-        this->priority_queue = new T[this->size];
+        this->priority_queue = new heapnode<T>[this->size];
         this->heap_size = 0;
     };
 
@@ -68,31 +83,35 @@ public:
 
     T getHighestPrioriry() //devolve elemento com maior prioridade
     {
-        return priority_queue[0];
+        return priority_queue[0].data;
     };
 
-    void insert(T node) //insere elemento no heap se há espaço
+    void insert(int key, T data) //insere elemento no heap se há espaço
     {
-        if(heap_size < size)
+        if(heap_size == size)
         {
-            priority_queue[heap_size] = node;
-            up(heap_size);
-            heap_size++;
-        }
-        else
             std::cerr << "Overflow!\n";
+            return;
+        }
+
+        heapnode<T> node(key, data);
+        priority_queue[heap_size] = node;
+        up(heap_size);
+        heap_size++;
+
     };
 
     void remove() //exclui elemento de maior prioridade
     {
-        if(heap_size > 0)
+        if(heap_size == 0)
         {
-            exchange(&priority_queue[0], &priority_queue[heap_size]);
-            heap_size--;
-            down(0);
-        }
-        else
             std::cerr << "Underflow!\n";
+            return;
+        }
+
+        heap_size--;
+        priority_queue[0] = priority_queue[heap_size];
+        down(0);
     };
 
     void decreaseKey(int i, int new_key) //diminui chave de um nó na posiçao i
@@ -117,23 +136,22 @@ public:
     {
         for(int i = 0; i < heap_size; i++)
         {
-            std::cout << priority_queue[i].key << " ";
+            std::cout << "[Index: " << i << "|Key: " << priority_queue[i].key << ", Data: " << priority_queue[i].data << "] ";
         }
     };
 };
-
 
 template <class T>
 class HeapMax
 {
 private:
-    T *priority_queue; //array que guardara os elementos do heap
+    heapnode<T> *priority_queue; //array que guardara os elementos do heap
     int size; //tamanho maximo do heap
     int heap_size; //quantidade de elementos no heap
 
-    void exchange(T *a, T *b) //troca nós de posição
+    void exchange(heapnode<T> *a, heapnode<T> *b) //troca nós de posição
     {
-        T temp = *a;
+        heapnode<T> temp = *a;
         *a = *b;
         *b = temp;
     };
@@ -179,7 +197,7 @@ public:
     HeapMax(int size)
     {
         this->size = size;
-        this->priority_queue = new T[this->size];
+        this->priority_queue = new heapnode<T>[this->size];
         this->heap_size = 0;
     };
 
@@ -190,34 +208,34 @@ public:
 
     T getHighestPrioriry() //devolve elemento com maior prioridade
     {
-        return priority_queue[0];
+        return priority_queue[0].data;
     };
 
-    void insert(T node) //insere elemento no heap se há espaço
+    void insert(int key, T data) //insere elemento no heap se há espaço
     {
-        if(heap_size < size)
+        if(heap_size == size)
         {
-            priority_queue[heap_size] = node;
-            up(heap_size);
-            heap_size++;
-
-            if(heap_size == size)
-             heap_size--;
-        }
-        else
             std::cerr << "Overflow!\n";
+            return;
+        }
+
+        heapnode<T> node(key, data);
+        priority_queue[heap_size] = node;
+        up(heap_size);
+        heap_size++;
     };
 
     void remove() //exclui elemento de maior prioridade
     {
-        if(heap_size >= 0)
+        if(heap_size == 0)
         {
-            exchange(&priority_queue[0], &priority_queue[heap_size]);
-            heap_size--;
-            down(0);
-        }
-        else
             std::cerr << "Underflow!\n";
+            return;
+        }
+
+        heap_size--;
+        priority_queue[0] = priority_queue[heap_size];
+        down(0);
     };
 
     void decreaseKey(int i, int new_key) //diminui chave de um nó na posiçao i
@@ -240,9 +258,9 @@ public:
 
     void printHeap() //imprime o heap
     {
-        for(int i = 0; i < heap_size + 1; i++)
+        for(int i = 0; i < heap_size; i++)
         {
-            std::cout << priority_queue[i].key << " ";
+            std::cout << "[Index: " << i << "|Key: " << priority_queue[i].key << ", Data: " << priority_queue[i].data << "] ";
         }
     };
 };

@@ -268,9 +268,10 @@ void BSTree<T>::clearTree(bstnode<T>* node)
 {
     if(node != nullptr)
     {
+        bstnode<T> *left = node->left, right = node->right;
+        delete node;
         clearTree(node->left);
         clearTree(node->right);
-        delete node;
     }
 };
 
