@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 template <class T>
 struct btreenode
@@ -49,7 +50,7 @@ public:
     void insert(int key, T data); //insere um elemento na árvore
     void remove(int key); //remove um elemento da árvore
     void traverseInOrder(btreenode<T>* node); //percorre a árvore em ordem
-    void showNodes(btreenode<T>* node); //mostra os nós da árvore
+    void showBtree(btreenode<T>* node); ////mostra os nós da árvore
 
 };
 
@@ -263,7 +264,7 @@ void BTree<T>::removeFromLeaf(btreenode<T>* node, int index)
     }
 
     node->n_of_elements--; //reduz o número de elementos no nó
-}
+};
 
 template <class T>
 void BTree<T>::removeFromInternal(btreenode<T>* node, int index)
@@ -298,7 +299,7 @@ void BTree<T>::removeFromInternal(btreenode<T>* node, int index)
         merge(node, index);
         removeFromNode(node->children[index], key);
     }
-}
+};
 
 
 template <class T>
@@ -312,7 +313,7 @@ std::pair<btreenode<T>*, int> BTree<T>::getPred(btreenode<T>* node, int index)
     int n = current->n_of_elements - 1;
 
     return std::make_pair(current, n); //retorna o nó e a posição do sucessor
-}
+};
 
 template <class T>
 std::pair<btreenode<T>*, int> BTree<T>::getSucc(btreenode<T>* node, int index)
@@ -323,7 +324,7 @@ std::pair<btreenode<T>*, int> BTree<T>::getSucc(btreenode<T>* node, int index)
         current = current->children[0];
 
     return std::make_pair(current, 0); //retorna o nó e a posição do sucessor
-}
+};
 
 template <class T>
 void BTree<T>::fill(btreenode<T>* node, int index)
@@ -342,7 +343,7 @@ void BTree<T>::fill(btreenode<T>* node, int index)
         else //se não une com o posterior
             merge(node, index-1);
     }
-}
+};
 
 template <class T>
 void BTree<T>::merge(btreenode<T>* node, int index)
@@ -381,7 +382,7 @@ void BTree<T>::merge(btreenode<T>* node, int index)
     node->n_of_elements--;
 
     delete sibling; //libera o nó agora vazio
-}
+};
 
 template <class T>
 void BTree<T>::borrowFromPrev(btreenode<T>* node, int index)
@@ -416,7 +417,7 @@ void BTree<T>::borrowFromPrev(btreenode<T>* node, int index)
     //atualiza a quanditade de elementos nos nós
     child->n_of_elements++;
     sibling->n_of_elements--;
-}
+};
 
 template <class T>
 void BTree<T>::borrowFromNext(btreenode<T>* node, int index)
@@ -451,7 +452,7 @@ void BTree<T>::borrowFromNext(btreenode<T>* node, int index)
     //atualiza a quanditade de elementos nos nós
     child->n_of_elements++;
     sibling->n_of_elements--;
-}
+};
 
 template <class T>
 void BTree<T>::traverseInOrder(btreenode<T>* node)
@@ -470,22 +471,31 @@ void BTree<T>::traverseInOrder(btreenode<T>* node)
 };
 
 template <class T>
-void BTree<T>::showNodes(btreenode<T>* node)
+void BTree<T>::showBtree(btreenode<T>* node)
 {
-    int i, n = node->n_of_elements;
+    std::queue<btreenode<T>*> nodes;
+    btreenode<T> *current;
+    int i, n;
+    nodes.push(node);
 
-    std::cout << '[';
-    for (i = 0; i < n; i++)
+    while(!nodes.empty())
     {
-        std::cout << node->keys[i]  << ',';
-    }
-    std::cout << ']';
-
-    if (!node->is_leaf)
-    {
-        for (i = 0; i < n + 1; i++)
+        current = nodes.front();
+        nodes.pop();
+        n = current->n_of_elements;
+        std::cout << '[';
+        for (i = 0; i < n; i++)
         {
-            showNodes(node->children[i]);
+            std::cout << current->keys[i]  << ',';
+        }
+        std::cout << ']';
+
+        if(!current->is_leaf)
+        {
+            for (i = 0; i <= n; i++)
+            {
+                nodes.push(current->children[i]);
+            }
         }
     }
-}
+};
