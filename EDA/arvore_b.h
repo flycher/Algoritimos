@@ -29,13 +29,25 @@ private:
     btreenode<T> *root;
     void splitChild(btreenode<T>* node, btreenode<T>* child, int index); //cisão
     void insertNonfull(btreenode<T>* node, int key, T data); //insersão em folha
+    //funçoes de remoção adaptadas de https://www.geeksforgeeks.org/b-tree-set-3delete/
+    int findKey(btreenode<T>* node, int key); //acha a posição da chave primeira maior no nó
+    void removeFromNode(btreenode<T>* node, int key); //remove o elemento de um nó
+    void removeFromLeaf(btreenode<T>* node, int index); //remove de um nó folha
+    void removeFromInternal(btreenode<T>* node, int index); //remove de um nó interno
+    std::pair<btreenode<T>*, int> getPred(btreenode<T>* node, int index); //retorna nó e posição do predecessor
+    std::pair<btreenode<T>*, int> getSucc(btreenode<T>* node, int index); //retorna nó e posição do sucessor
+    void fill(btreenode<T>* node, int index); //redistribuição
+    void merge(btreenode<T>* node, int index); //fusão
+    void borrowFromNext(btreenode<T>* node, int index); //pega uma chave do filho posterior
+    void borrowFromPrev(btreenode<T>* node, int index); //pega uma chave do filho anterior
 
 public:
     BTree(int degree);
     ~BTree();
-    btreenode<T>* getRoot(); //retora a raiz da árvore
-    std::pair<btreenode<T>*, int> search(int key); //retorna o no que se encontra a chave
+    btreenode<T>* getRoot(); //retona a raiz da árvore
+    std::pair<btreenode<T>*, int> search(int key, btreenode<T>* node); //retorna o nó e posição que se encontra a chave
     void insert(int key, T data); //insere um elemento na árvore
+    void remove(int key); //remove um elemento da árvore
     void traverseInOrder(btreenode<T>* node); //percorre a árvore em ordem
     void showNodes(btreenode<T>* node); //mostra os nós da árvore
 
@@ -60,36 +72,48 @@ btreenode<T>* BTree<T>::getRoot()
 };
 
 template <class T>
-std::pair<btreenode<T>*, int> BTree<T>::search(int key)
+std::pair<btreenode<T>*, int> BTree<T>::search(int key, btreenode<T>* node)
 {
-    btreenode<T> *node = root;
-    int l, r, m, k;
+    int i = 0;
+    //acha a posição da primeira chave maior ou igual a key
+    while (i < node->n_of_elements && key > node->keys[i])
+        i++;
 
-    while(node != nullptr)
+    if (node->keys[i] == key)
+        return std::make_pair(node, i);
+
+    if (node->is_leaf) //se a chave não foi encontrada e estamos numa folha
+        return std::make_pair(node, -1); //-1 aponta que a chave não está na árvore
+
+    return search(key, node->children[i]); //procura no nó apropriado
+};
+
+
+template <class T>
+void BTree<T>::insert(int key, T data)
+{
+    std::pair<btreenode<T>*, int> repeated = search(key, root);
+
+    if(repeated.second != -1)
+        std::cerr << "Key already in the tree.\n";
+
+    else
     {
-        l = 0, r = node->n_of_elements - 1;
-        while(l <= r)
+        if(root->n_of_elements == 2 * degree - 1) //se não ha espaço a raiz
         {
-            m = l + (r - 1) / 2;
-            k = node->keys[m];
+            btreenode<T> *new_node = new btreenode<T>(degree, false, 0); //cria nova raiz
+            new_node->children[0] = root;
+            root = new_node;
+            splitChild(new_node, new_node->children[0], 0); //realiza cisão na antiga raiz
 
-            if(k == key)
-                return std::make_pair(node, m);
-            else if(k > key)
-                r = m - 1;
-            else
-                l = m + 1;
+            int i = 0;
+            if (key > new_node->keys[0]) //se o elemento que sobe e menor que a chave
+                i++;
+
+            insertNonfull(new_node->children[i], key, data); //inserimos o novo elemento em uma folha
         }
-
-        if(node->is_leaf)
-        {
-            return std::make_pair(node, -1);
-        }
-
-        if(k > key)
-            node = node->children[m];
         else
-            node = node->children[m + 1];
+            insertNonfull(root, key, data); //inserimos o novo elemento na raiz
     }
 };
 
@@ -133,33 +157,6 @@ void BTree<T>::splitChild(btreenode<T>* node, btreenode<T>* child, int index)
 };
 
 template <class T>
-void BTree<T>::insert(int key, T data)
-{
-    std::pair<btreenode<T>*, int> repeated = search(key);
-
-    if(repeated.second != -1)
-        cerr << "Key already in the tree.\n";
-    else
-    {
-        if(root->n_of_elements == 2 * degree - 1) //se não ha espaço a raiz
-        {
-            btreenode<T> *new_node = new btreenode<T>(degree, false, 0); //cria nova raiz
-            new_node->children[0] = root;
-            root = new_node;
-            splitChild(new_node, new_node->children[0], 0); //realiza cisão na antiga raiz
-
-            int i = 0;
-            if (key > new_node->keys[0]) //se o elemento que sobe e menor que a chave
-                i++;
-
-            insertNonfull(new_node->children[i], key, data); //inserimos o novo elemento em uma folha
-        }
-        else
-            insertNonfull(root, key, data); //inserimos o novo elemento na raiz
-    }
-};
-
-template <class T>
 void BTree<T>::insertNonfull(btreenode<T>* node, int key, T data)
 {
     int index = node->n_of_elements - 1; //quantidade de elementos no nó
@@ -195,6 +192,266 @@ void BTree<T>::insertNonfull(btreenode<T>* node, int key, T data)
         insertNonfull(node->children[index], key, data); //insere no destino
     }
 };
+
+template <class T>
+void BTree<T>::remove(int key)
+{
+    removeFromNode(root, key);
+
+    if (root->n_of_elements == 0) //se a raiz fiou sem elementos
+    {
+        btreenode<T> *temp = root;
+        if (root->is_leaf) //se ela e o unico nó
+            root = new btreenode<T>(degree, true, 0); //cria nova raiz
+        else
+            root = root->children[0]; //raiz vira seu filho
+
+        delete temp;
+    }
+};
+
+template <class T>
+int BTree<T>::findKey(btreenode<T>* node, int key)
+{
+    int index = 0;
+
+    while (index < node->n_of_elements && node->keys[index] < key)
+        index++;
+
+    return index;
+};
+
+template <class T>
+void BTree<T>::removeFromNode(btreenode<T>* node, int key)
+{
+    int index = findKey(node, key);
+
+    if (index < node->n_of_elements && node->keys[index] == key) //se a chave está nesse nó
+    {
+        if (node->is_leaf)
+            removeFromLeaf(node, index);
+        else
+            removeFromInternal(node, index);
+    }
+    else //se não está
+    {
+        if(node->is_leaf) //chave não esta no nó e este é folha
+            std::cerr << "Key not in the tree.\n";
+        else
+        {
+            //caso nó em que a chave pode estar dem degree - 1 nós
+            if (node->children[index]->n_of_elements < degree)
+                fill(node, index);
+
+            //se o filho que foi fundido estava na ultima posição, esta foi
+            //fundida com o filho anterior
+            if (index == node->n_of_elements && index > node->n_of_elements)
+                removeFromNode(node->children[index - 1], key);
+            else //se não, chamanos no filho que terá pelo menos degree chaves
+                removeFromNode(node->children[index], key);
+        }
+    }
+};
+
+template <class T>
+void BTree<T>::removeFromLeaf(btreenode<T>* node, int index)
+{
+    for (int i = index + 1; i < node->n_of_elements; i++) //move os elementos
+    {
+        node->keys[i - 1] = node->keys[i];
+        node->data[i - 1] = node->data[i];
+    }
+
+    node->n_of_elements--; //reduz o número de elementos no nó
+}
+
+template <class T>
+void BTree<T>::removeFromInternal(btreenode<T>* node, int index)
+{
+    int key = node->keys[index];
+
+    //se o filho em index tem pelomenos degree chaves, acha o predecessor nele
+    if(node->children[index]->n_of_elements >= degree)
+    {
+        std::pair<btreenode<T>*, int> pred = getPred(node, index);
+        int pred_key = pred.first->keys[pred.second];
+        T pred_data = pred.first->data[pred.second];
+        //troca o elemento por seu predecessor
+        node->keys[index] = pred_key;
+        node->data[index] = pred_data;
+        removeFromNode(node->children[index], pred_key);
+    }
+    //se o filho em index + 1 tem pelomenos degree chaves, acha o sucessor nele
+    else if(node->children[index + 1]->n_of_elements >= degree)
+    {
+        std::pair<btreenode<T>*, int> succ = getSucc(node, index);
+        int succ_key = succ.first->keys[succ.second];
+        T succ_data = succ.first->data[succ.second];
+        //troca o elemento por seu sucessor
+        node->keys[index] = succ_key;
+        node->data[index] = succ_data;
+        removeFromNode(node->children[index + 1], succ_key);
+    }
+    //se ambos tem menos de degree elementos, fundimos esses e procuramos nesse novo nó
+    else
+    {
+        merge(node, index);
+        removeFromNode(node->children[index], key);
+    }
+}
+
+
+template <class T>
+std::pair<btreenode<T>*, int> BTree<T>::getPred(btreenode<T>* node, int index)
+{
+    btreenode<T> *current = node->children[index];
+
+    while (!current->is_leaf) //move no filho mais a direita até chegar numa folha
+        current = current->children[current->n_of_elements];
+
+    int n = current->n_of_elements - 1;
+
+    return std::make_pair(current, n); //retorna o nó e a posição do sucessor
+}
+
+template <class T>
+std::pair<btreenode<T>*, int> BTree<T>::getSucc(btreenode<T>* node, int index)
+{
+    btreenode<T> *current = node->children[index + 1];
+
+    while (!current->is_leaf) //move no filho mais a esquerda até chegar numa folha
+        current = current->children[0];
+
+    return std::make_pair(current, 0); //retorna o nó e a posição do sucessor
+}
+
+template <class T>
+void BTree<T>::fill(btreenode<T>* node, int index)
+{
+    //se o filho anterior tem mais de degree + 1 elementos, pega um emprestado
+    if (index != 0 && node->children[index - 1]->n_of_elements >= degree)
+        borrowFromPrev(node, index);
+    //se o filho posteriot tem mais de degree + 1 elementos, pega um emprestado
+    else if (index != node->n_of_elements && node->children[index + 1]->n_of_elements >= degree)
+        borrowFromNext(node, index);
+    //reazila a fusão dos irmãos
+    else
+    {
+        if (index != node->n_of_elements) //se for o ultimo filho funde com o anterior
+            merge(node, index);
+        else //se não une com o posterior
+            merge(node, index-1);
+    }
+}
+
+template <class T>
+void BTree<T>::merge(btreenode<T>* node, int index)
+{
+    btreenode<T> *child = node->children[index];
+    btreenode<T> *sibling = node->children[index + 1];
+
+    //pega um elemento do nó e insere no em child
+    child->keys[degree - 1] = node->keys[index];
+    child->data[degree - 1] = node->data[index];
+
+    for (int i = 0; i < sibling->n_of_elements; i++) //copia as chave de um filho para o outro
+    {
+        child->keys[i + degree] = sibling->keys[i];
+        child->data[i + degree] = sibling->data[i];
+    }
+
+    if (!child->is_leaf) //se não forem folha
+    {
+        for(int i = 0; i <= sibling->n_of_elements; i++) //copia os nós de um filho para o outro
+            child->children[i + degree] = sibling->children[i];
+    }
+
+    //preenche o espaço criado ao mover o elemento de node para child
+    for (int i = index + 1; i < node->n_of_elements; i++)
+    {
+        node->keys[i - 1] = node->keys[i];
+        node->data[i - 1] = node->data[i];
+    }
+
+    for (int i = index + 2; i <= node->n_of_elements; i++) //move os nós
+        node->children[i - 1] = node->children[i];
+
+    //atualiza a quantidade de elementos em child e nó
+    child->n_of_elements += sibling->n_of_elements + 1;
+    node->n_of_elements--;
+
+    delete sibling; //libera o nó agora vazio
+}
+
+template <class T>
+void BTree<T>::borrowFromPrev(btreenode<T>* node, int index)
+{
+    btreenode<T> *child = node->children[index];
+    btreenode<T> *sibling = node->children[index-1];
+
+    for (int i = child->n_of_elements - 1; i >= 0; i--) //cria espaço para o novo elemento
+    {
+        child->keys[i + 1] = child->keys[i];
+        child->data[i + 1] = child->data[i];
+    }
+
+    if (!child->is_leaf) //se não for uma folha move os nós
+    {
+        for(int i = child->n_of_elements; i >= 0; i--)
+            child->children[i + 1] = child->children[i];
+    }
+
+    //copia a ultima chave de node para child
+    child->keys[0] = node->keys[index - 1];
+    child->data[0] = node->data[index - 1];
+
+    //move o ultimo nó do irmão para child se não for folha
+    if(!child->is_leaf)
+        child->children[0] = sibling->children[sibling->n_of_elements];
+
+    //move a chave do irmão para o parente
+    node->keys[index - 1] = sibling->keys[sibling->n_of_elements - 1];
+    node->data[index - 1] = sibling->data[sibling->n_of_elements - 1];
+
+    //atualiza a quanditade de elementos nos nós
+    child->n_of_elements++;
+    sibling->n_of_elements--;
+}
+
+template <class T>
+void BTree<T>::borrowFromNext(btreenode<T>* node, int index)
+{
+    btreenode<T> *child = node->children[index];
+    btreenode<T> *sibling = node->children[index + 1];
+
+    //copia a chave de node para a ultima posição de child
+    child->keys[child->n_of_elements] = node->keys[index];
+    child->data[child->n_of_elements] = node->data[index];
+
+    if (!child->is_leaf) //copia o primeiro filho de sibling para a ultima posiçao de child
+        child->children[child->n_of_elements + 1] = sibling->children[0];
+
+    //copia a primeira chave de silbing para node
+    node->keys[index] = sibling->keys[0];
+    node->data[index] = sibling->data[0];
+
+    //move os elementos de sibling
+    for (int i = 1; i < sibling->n_of_elements; i++)
+    {
+        sibling->keys[i - 1] = sibling->keys[i];
+        sibling->data[i - 1] = sibling->data[i];
+    }
+
+    if (!sibling->is_leaf) //move os filhos
+    {
+        for(int i = 1; i <= sibling->n_of_elements; i++)
+            sibling->children[i - 1] = sibling->children[i];
+    }
+
+    //atualiza a quanditade de elementos nos nós
+    child->n_of_elements++;
+    sibling->n_of_elements--;
+}
 
 template <class T>
 void BTree<T>::traverseInOrder(btreenode<T>* node)

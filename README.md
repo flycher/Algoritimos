@@ -32,14 +32,17 @@
 ## *Estrutuda de Dados Avançada:*
 
 * Árvore Rubro Negra
-  * Árvore binária em que a altura e mantida sempre proxima de log n
-    * Buscar: O(n log n) | Inserir: O(n log n) | Remover: O(n log n)
+  * Árvore binária balanceada em que a altura e mantida sempre proxima de log n
+    * Buscar: O(log n) | Inserir: O(log n) | Remover: O(log n)
 * Tabela de Dispersão
   * Associa chaves de pesquisa a valores com objetivo de fazer uma busca rápida a partir da chave.
     * Buscar: θ(1) / O(n) | Inserir: θ(1) / O(n) | Remover: θ(1) / O(n)
 * Lista de Prioridade
-  * O elemento com maior prioridade é resgatado instantaneamente
+  * Guarda elementos a partir de sua prioridade
     * Mais Prioritário: O(1) | Inserir: O(log n) | Remover: O(log n) | Modificar Chave: O(log n)
 * Conjunto Disjunto
   * Rastreia um conjunto de elementos particionados em vários subconjuntos disjuntos.
     * União: O(1) | Junção: O(1)
+* Árvore B
+  * Uma árvore balanceada em que um nó pode ter mais de um elemento e filhos. Usada para armazenamento em memória secundária.
+    * Buscar: O(log n) | Inserir: O(log n) | Remover: O(log n)

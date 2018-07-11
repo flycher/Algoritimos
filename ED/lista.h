@@ -3,8 +3,17 @@
 template <class T>
 struct listnode
 {
+    int key;
     T data; //guarda o dado do nó
     listnode<T> *next = nullptr; //ponteiro para o próximo nó da lista
+
+    listnode() {};
+
+    listnode(int key, T data)
+    {
+        this->key = key;
+        this->data = data;
+    };
 };
 
 template <class T>
@@ -17,9 +26,9 @@ public:
     Lista();
     ~Lista();
     bool checkEmpty(); //verifica se a lista esta vazia
-    void insert(T data); //insere o item na lista
-    void remove(T data); //remove o item da lista
-    listnode<T> getNode(T data); //pega um nó da lista
+    void insert(int key, T data); //insere o item na lista
+    void remove(int key); //remove o item da lista
+    listnode<T> getNode(int key); //pega um nó da lista
     void displayItems(); //exibe os itens guardados na lista
     void listshow();
 };
@@ -50,20 +59,19 @@ bool Lista<T>::checkEmpty()
 };
 
 template <class T>
-void Lista<T>::insert(T data)
+void Lista<T>::insert(int key, T data)
 {
-    listnode<T> *temp = new listnode<T>;
-    head->data  = data;
-    temp->next  = head;
-    head        = temp;
+    listnode<T> *temp = new listnode<T>(key, data);
+    temp->next = head->next;
+    head->next = temp;
 };
 
 template <class T>
-void Lista<T>::remove(T data)
+void Lista<T>::remove(int key)
 {
     listnode<T> *temp = head;
 
-    while(temp->next != nullptr && temp->next->data != data)
+    while(temp->next != nullptr && temp->next->key != key)
         temp = temp->next;
 
     if(temp->next != nullptr)
@@ -75,11 +83,11 @@ void Lista<T>::remove(T data)
 };
 
 template <class T>
-listnode<T> Lista<T>::getNode(T data)
+listnode<T> Lista<T>::getNode(int key)
 {
     listnode<T> *temp = head->next;
 
-    while(temp != nullptr && temp->data != data)
+    while(temp != nullptr && temp->key != key)
         temp = temp->next;
 
     return *temp;
@@ -92,7 +100,7 @@ void Lista<T>::displayItems()
 
     while(temp != nullptr)
     {
-        std::cout << "| " << temp->data << " |";
+        std::cout << "| " << temp->key << ',' << temp->data << " |";
         temp = temp->next;
     }
 };
@@ -104,7 +112,7 @@ void Lista<T>::listshow()
 
     while(temp != nullptr)
     {
-        std::cout << "[ " << temp->data << " |-]-> ";
+        std::cout << "[ " << temp->key << " |-]-> ";
         temp = temp->next;
     }
 
