@@ -40,7 +40,7 @@ public:
     RBTree();
     ~RBTree();
     rbtnode<T>* getRoot(); //retorna o nó raiz da arvore
-    rbtnode<T>* search(int key); //procura o no com chave key na arvore
+    std::pair<rbtnode<T>*, bool> search(int key); //procura o no com chave key na arvore
     void insert(int key, T data); //insere dado data com chave key na arvore
     void remove(int key); //remove nó com chave key da arvore
     rbtnode<T>* successor(int key); //retorna sucessor do nó de chave key
@@ -79,7 +79,7 @@ rbtnode<T>* RBTree<T>::getRoot()
 };
 
 template <class T>
-rbtnode<T>* RBTree<T>::search(int key)
+std::pair<rbtnode<T>*, bool> RBTree<T>::search(int key)
 {
     rbtnode<T> *temp = root;
 
@@ -91,7 +91,7 @@ rbtnode<T>* RBTree<T>::search(int key)
             temp = temp->left;
     }
 
-    return temp;
+    return std::make_pair(temp, temp->key == key);
 };
 
 template <class T>
@@ -137,7 +137,7 @@ void RBTree<T>::insert(int key, T data)
             fixrbinsert(newnode);
         }
         else
-            std::cerr << "Value already in the tree.\n";
+            std::cerr << "Key already in the tree.\n";
     }
 };
 
@@ -264,7 +264,7 @@ void RBTree<T>::remove(int key)
     rbtnode<T> *old = search(key);
 
     if(old == NIL)
-        std::cerr << "Value not in the tree.\n";
+        std::cerr << "Key not in the tree.\n";
     else
     {
         rbtnode<T> *sub = old, *replacement; //sub será o nó a ser removido ou o que substituirá old

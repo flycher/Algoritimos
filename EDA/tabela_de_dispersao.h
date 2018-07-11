@@ -23,14 +23,14 @@ public:
         delete [] colors;
     };
 
-    T searchDirectAdress(int key) //procura na tabela pela chave
+    std::pair<T, bool> searchDirectAdress(int key) //procura na tabela pela chave
     {
         if(colors[key] == 1)
-            return table[key];
+            return std::make_pair(table[key], true);
         else
             std::cerr << "Key not in use.\n";
         T aux;
-        return aux;
+        return std::make_pair(aux, false);
     };
 
     void insertDirectAdress(int key, T data) //insere na tabela pela chave do nó
@@ -103,15 +103,15 @@ public:
         delete [] table;
     };
 
-    T searchChainedHash(int key) //procura na lista do array[h(key)] pelo no com chave key
+    std::pait<T, bool> searchChainedHash(int key) //procura na lista do array[h(key)] pelo no com chave key
     {
         T aux;
         try {
-            return table[hashfunction(key)].at(key);
+            return std::make_pair(table[hashfunction(key)].at(key), true);
         }
         catch (const std::out_of_range& oor) {
             std::cerr << "Key not in the table!\n";
-            return aux;
+            return std::make_pair(aux, false);
         }
     };
 

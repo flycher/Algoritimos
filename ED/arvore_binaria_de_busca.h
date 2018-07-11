@@ -31,7 +31,7 @@ public:
     BSTree(); //inicializa a saiz da árvore
     ~BSTree(); //libera os nós da memória
     bstnode<T>* getRoot(); //retorna o nó raiz da arvore
-    bstnode<T>* search(int key); //procura o no com chave k na arvore
+    std::pair<bstnode<T>*, bool> search(int key); //procura o no com chave k na arvore
     void insert(int key, T data); //insere dado d com chave k na arvore
     void remove(int key); //remove nó com chave k da arvore
     bstnode<T>* successor(int key); //retorna sucessor do nó de chave k
@@ -63,7 +63,7 @@ bstnode<T>* BSTree<T>::getRoot()
 };
 
 template <class T>
-bstnode<T>* BSTree<T>::search(int key)
+std::pair<bstnode<T>*, bool> BSTree<T>::search(int key)
 {
     bstnode<T> *temp = root;
 
@@ -75,7 +75,7 @@ bstnode<T>* BSTree<T>::search(int key)
             temp = temp->left;
     }
 
-    return temp;
+    return std::make_pair(temp, temp->key == key);
 };
 
 template <class T>
@@ -118,7 +118,7 @@ void BSTree<T>::insert(int key, T data)
                 parent->left = newnode;
         }
         else
-            std::cerr << "Value already in the tree.\n";
+            std::cerr << "Key already in the tree.\n";
     }
 };
 
@@ -141,7 +141,7 @@ void BSTree<T>::remove(int key)
     bstnode<T> *old = search(key); //acha nó com chave k na arvore
 
     if(old == nullptr)
-        std::cerr << "Value not in the tree.\n";
+        std::cerr << "Key not in the tree.\n";
     else
     {
         if(old->left == nullptr) //old não tem filho direito
