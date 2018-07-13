@@ -18,6 +18,9 @@ UnionFind::UnionFind(int max)
     pai = new int[max];
     peso = new int[max];
     qtd = new int[max];
+        
+    for(int i = 0; i < max; i++)
+        pai[i] = i;
 }
 
 UnionFind::~UnionFind()
@@ -43,7 +46,7 @@ void UnionFind::join(int x, int y)
     y = find(y);
 
     if(x == y ){
-        std::cout << "X and Y already the same set.\n";
+        std::cout << "X and Y already in the same set.\n";
     }
     else
     {
