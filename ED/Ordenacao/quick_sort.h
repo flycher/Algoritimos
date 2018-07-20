@@ -1,3 +1,6 @@
+#include <cstdlib>
+#include <iostream>
+
 //troca os elementos de posição
 void interchange(int *a, int *b)
 {
@@ -11,6 +14,11 @@ void interchange(int *a, int *b)
 //e todos os elementos da direita são maiores que A[i + 1]
 int partition(int* A, int p, int r)
 {
+    //selectiona elemento aleatorio do array como pivô
+    srand(time(NULL));
+    int random = p + rand() % (r - p);
+    interchange(&A[random], &A[r]);
+
     int x = A[r];
     int i = p - 1;
 
