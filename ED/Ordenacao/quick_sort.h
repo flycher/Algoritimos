@@ -10,37 +10,41 @@ void interchange(int *a, int *b)
 }
 
 //particiona o array em 2 subarrays, onde
-//todos os elementos da esquerda são menores ou iguais a A[i + 1]
-//e todos os elementos da direita são maiores que A[i + 1]
-int partition(int* A, int p, int r)
+//todos os elementos da esquerda são menores ou iguais a arr[i + 1]
+//e todos os elementos da direita são maiores que arr[i + 1]
+int partition(int* arr, int left, int right)
 {
     //selectiona elemento aleatorio do array como pivô
     srand(time(NULL));
-    int random = p + rand() % (r - p);
-    interchange(&A[random], &A[r]);
+    int random = left + rand() % (right - left);
+    interchange(&arr[random], &arr[right]);
 
-    int x = A[r];
-    int i = p - 1;
+    int pivot = arr[right];
+    int i = left - 1;
 
-    for(int j = p; j < r; j++)
+    for(int j = left; j < right; j++)
     {
-        if(A[j] <= x) {
+        if(arr[j] <= pivot)
+        {
             i++;
-            interchange(&A[i], &A[j]);
+            interchange(&arr[i], &arr[j]);
         }
     }
+
     i++;
-    interchange(&A[i], &A[r]);
+    interchange(&arr[i], &arr[right]);
+
     return i;
 }
 
 //q sera o elemento que dividira em dois subarrays
-//a primeira chamada p ser 0 e r o tamanho do array - 1
-void quickSort(int* A, int p, int r)
+//a primeira chamada left ser 0 e right o tamanho do array - 1
+void quickSort(int* arr, int left, int right)
 {
-    if(p < r) {
-        int q = partition(A, p, r);
-        quickSort(A, p, q - 1);
-        quickSort(A, q + 1, r);
+    if(left < right)
+    {
+        int q = partition(arr, left, right);
+        quickSort(arr, left, q - 1);
+        quickSort(arr, q + 1, right);
     }
 }

@@ -1,57 +1,61 @@
 //recebe o array, os indices inicial, do meio e final
-void merge(int* A, int p, int q, int r)
+void merge(int* arr, int left, int mid, int right)
 {
-    //n1 e n2 recebem os tamanhos dos subarray da esquerda e direita
-    int n1 = q - p + 1;
-    int n2 = r - q;
+    //l e r recebem os tamanhos dos subarray da esquerda e direita
+    int l = mid - left + 1;
+    int r = right - mid;
     int i, j, k;
 
-    //cria os arrays da esquerda e da direita com n1 +1 e n2 + 1 posições
-    int L[n1 + 1], R[n2 + 1];
+    //cria os arrays da esquerda e da direita com l +1 e r + 1 posições
+    int L[l + 1], R[r + 1];
 
-    //preenchemos os arrays L e R com os subarrays esquerdo e direito de A
-    for(i = 0; i < n1; i++)
-        L[i] = A[p + i];
-    for(j = 0; j < n2; j++)
-        R[j] = A[q + j + 1];
+    //preenchemos os arrays L e R com os subarrays esquerdo e direito de arr
+    for(i = 0; i < l; i++)
+        L[i] = arr[left + i];
+    for(j = 0; j < r; j++)
+        R[j] = arr[mid + j + 1];
 
     //na ultima posicao prechenchemos com um numero maior possivel do inteiro
     //este representa uma sentinela, para evitar ficar checando
     //se arrays estão vazios
-    L[n1] = 2147483647;
-    R[n2] = 2147483647;
+    L[l] = 2147483647;
+    R[r] = 2147483647;
 
     i = 0;
     j = 0;
 
     //paramos o loop quando executamos a mesma quantidade de passos
     //que o tamanho do array
-    //"andamos" em L quando inserimos um elemento em A
+    //"andamos" em L quando inserimos um elemento em arr
     //o mesmo acontece em R
-    for(k = p; k <= r; k++)
+    for(k = left; k <= right; k++)
     {
-        if(L[i] <= R[j]) {
-            A[k] = L[i];
+        if(L[i] <= R[j])
+        {
+            arr[k] = L[i];
             i++;
-        } else {
-            A[k] = R[j];
+        }
+        else
+        {
+            arr[k] = R[j];
             j++;
         }
     }
 }
 
 //recebe o array que queremos ordenar, os indices inicial e final
-//na primeira chamada, p deve ser 0 e r o tamanho do array - 1
-void mergeSort(int* A, int p, int r)
+//na primeira chamada, left deve ser 0 e right o tamanho do array - 1
+void mergeSort(int* arr, int left, int right)
 {
-    if(p < r) {
-        //q recebe o indice do meio no array
+    if(left < right)
+    {
+        //mid recebe o indice do meio no array
         //chamamos entao mergeSort novamente para o array do inicio ao meio
         //e do meio + 1 ao final
         //enfim chamamos merge para o array
-        int q = (p + r) / 2;
-        mergeSort(A, p, q);
-        mergeSort(A, q + 1, r);
-        merge(A, p, q, r);
+        int mid = (left + right) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
     }
 }
