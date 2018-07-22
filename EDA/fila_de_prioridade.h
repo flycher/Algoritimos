@@ -1,5 +1,5 @@
 #include <iostream>
-#include<climits>
+#include <climits>
 
 template <class T>
 struct heapnode

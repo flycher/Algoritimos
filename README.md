@@ -46,3 +46,8 @@
 * Árvore B
   * Uma árvore balanceada em que um nó pode ter mais de um elemento e filhos. Usada para armazenamento em memória secundária.
     * Buscar: O(log n) | Inserir: O(log n) | Remover: O(log n)
+* Grafos
+  * Matriz de Adjacências
+    * Os elementos da matriz indicam se os pares são adjacentes no grafo.
+  * Lista de Adjacências
+    * Cada elemento da lista indica um vizinho do vértice.
