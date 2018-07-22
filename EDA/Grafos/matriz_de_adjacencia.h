@@ -12,6 +12,9 @@ private:
 public:
     MatrizDeAdjacencia(int V, int E, bool directed, bool weighted);
     ~MatrizDeAdjacencia();
+    int getVertices() { return V; };
+    int getEdges() { return E; };
+    int* getAdjacent(int u) { return G[u]; }; //retorna os adjacentes do vertice
     void addEdge(int u, int v, int weight); //adiciona uma aresta
     void removeEdge(int u, int v); //remove uma aresta
     bool checkEdge(int u, int v); //verifica se a aresta existe

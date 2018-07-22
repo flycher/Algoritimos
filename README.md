@@ -51,3 +51,5 @@
     * Os elementos da matriz indicam se os pares são adjacentes no grafo.
   * Lista de Adjacências
     * Cada elemento da lista indica um vizinho do vértice.
+  * Busca Em Largura
+    * Discobre cada vértice que e alcançado por u, calculando sua menor distância para cada vértice v
