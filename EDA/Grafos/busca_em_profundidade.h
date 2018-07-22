@@ -25,7 +25,7 @@ void DFSvisit(ListaDeAdjacencia& G, int u)
             DFSvisit(G, v); //percorre o vértice
         }
     }
-    
+
     colors[u] = BLACK; //muda a cor do vértice para preto
     times++; //aumenta o tempo
     finished[u] = times; //adiciona o tempo de percorrimento do vértice
