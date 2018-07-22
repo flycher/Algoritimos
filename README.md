@@ -52,4 +52,6 @@
   * Lista de Adjacências
     * Cada elemento da lista indica um vizinho do vértice.
   * Busca Em Largura
-    * Discobre cada vértice que e alcançado por u, calculando sua menor distância para cada vértice v
+    * Descobre cada vértice que e alcançado por u, calculando sua menor distância para cada vértice v
+  * Busca em Profundidade
+    * Avança no grafo até alcançar um vértice que não possui nenhum vértice adjacente incalcançado. Após percorrer este vértice, retorna ao vértice anterior repetindo o processo.

@@ -3,7 +3,7 @@
 class ListaDeAdjacencia
 {
 private:
-    int V; //quatidade de vertices
+    int V; //quatidade de vértices
     int E; //quatidade de arestas
     bool directed; //se o grafo e direcionado
     bool weighted; //se as arestas possuem peso
@@ -14,7 +14,7 @@ public:
     ~ListaDeAdjacencia();
     int getVertices() { return V; };
     int getEdges() { return E; };
-    std::list<std::pair<int, int> > getAdjacent(int u) { return G[u]; }; //retorna os adjacentes do vertice
+    std::list<std::pair<int, int> > getAdjacent(int u) { return G[u]; }; //retorna os adjacentes do vértice
     void addEdge(int u, int v, int weight); //adiciona uma aresta
     void removeEdge(int u, int v); //remove uma aresta
     bool checkEdge(int u, int v); //verifica se a aresta existe

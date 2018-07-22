@@ -3,16 +3,16 @@
 #include <queue>
 #include <list>
 
-enum color { WHITE, GRAY, BLACK }; //cores representando vertice alcançado e percorrido
+enum color { WHITE, GRAY, BLACK }; //cores representando vértice alcançado e percorrido
 
-std::pair<int*, int*> BFS(ListaDeAdjacencia G, int s)
+std::pair<int*, int*> BFS(ListaDeAdjacencia& G, int s)
 {
-    int V = G.getVertices(); //numero de vertices no grafo
-    int *distances = new int[V]; //array guardando a distância dos vertices para s
-    int *parents = new int[V]; //array guardando os pais dos vertices na arvore gerada
-    color colors[V]; //array guardando as cores dos vertices na busca
+    int V = G.getVertices(); //numero de vértices no grafo
+    int *distances = new int[V]; //array guardando a distância dos vértices para s
+    int *parents = new int[V]; //array guardando os pais dos vértices na arvore gerada
+    color *colors = new color[V]; //array guardando as cores dos vértices na busca
 
-    //inicializa todos os vertices com distância infinita, pai inexistente e cor branca
+    //inicializa todos os vértices com distância infinita, pai inexistente e cor branca
     for(int i = 0; i < V; i++)
     {
         distances[i] = INT_MAX;
@@ -20,24 +20,24 @@ std::pair<int*, int*> BFS(ListaDeAdjacencia G, int s)
         colors[i] = WHITE;
     }
 
-    //define distância, pai e cor do vertice s
+    //define distância, pai e cor do vértice s
     distances[s] = 0;
     parents[s] = -1;
     colors[s] = GRAY;
 
     std::queue<int> Q; //cria fila de alcançados
-    Q.push(s); //adiciona o vertice s  a fica
+    Q.push(s); //adiciona o vértice s  a fica
 
-    int u, v; //vertices percorrido e alcançado
+    int u, v; //vértices percorrido e alcançado
 
     while(!Q.empty()) //enquanto a fila não estiver vazia
     {
-        u = Q.front(); //percorre o primeiro vertice da fila
+        u = Q.front(); //percorre o primeiro vértice da fila
         Q.pop();
 
-        for(auto it : G.getAdjacent(u)) //para cada vertice na lista de u
+        for(auto it : G.getAdjacent(u)) //para cada vértice na lista de u
         {
-            v = it.first; //olha o vertice v
+            v = it.first; //olha o vértice v
             if(colors[v] == WHITE) //se ele ainda não foi alcançado
             {
                 colors[v] = GRAY; //marca como alcançado
@@ -50,6 +50,7 @@ std::pair<int*, int*> BFS(ListaDeAdjacencia G, int s)
         colors[u] = BLACK; //marca u como percorrido
     }
 
-
+    delete [] colors;
+    delete [] parents;
     return std::make_pair(distances, parents); //retorna os arrays de distâncias e pais
 }

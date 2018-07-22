@@ -3,7 +3,7 @@
 class MatrizDeAdjacencia
 {
 private:
-    int V; //quatidade de vertices
+    int V; //quatidade de vértices
     int E; //quatidade de arestas
     bool directed; //se o grafo e direcionado
     bool weighted; //se as arestas possuem peso
