@@ -1,6 +1,5 @@
 #include "lista_de_adjacencia.h"
 #include <list>
-#include <iostream>
 
 enum color { WHITE, GRAY, BLACK }; //cores representando vértices alcançado e percorrido
 
@@ -26,8 +25,7 @@ void DFSvisit(ListaDeAdjacencia& G, int u)
             DFSvisit(G, v); //percorre o vértice
         }
     }
-
-    std::cout << u << std::endl;
+    
     colors[u] = BLACK; //muda a cor do vértice para preto
     times++; //aumenta o tempo
     finished[u] = times; //adiciona o tempo de percorrimento do vértice
