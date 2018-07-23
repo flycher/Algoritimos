@@ -1,5 +1,6 @@
 #include "lista_de_adjacencia.h"
 #include <list>
+#include <climits>
 
 enum color { WHITE, GRAY, BLACK }; //cores representando vértices alcançado e percorrido
 
@@ -31,7 +32,7 @@ void DFSvisit(ListaDeAdjacencia& G, int u)
     finished[u] = times; //adiciona o tempo de percorrimento do vértice
 };
 
-std::pair<int*, int*> DFS(ListaDeAdjacencia& G)
+std::pair<int*, int*> DFS(ListaDeAdjacencia& G, int u)
 {
     int V = G.getVertices(); //numero de vértices no grafo
     discovered = new int[V];
@@ -42,15 +43,13 @@ std::pair<int*, int*> DFS(ListaDeAdjacencia& G)
     //inicializa todos os vértices pai inexistente e cor branca
     for(int i = 0; i < V; i++)
     {
+        discovered[i] = INT_MAX;
+        finished[i] = INT_MAX;
         parents[i] = -1;
         colors[i] = WHITE;
     }
 
-    for(int u = 0; u < V; u++)
-    {
-        if(colors[u] == WHITE) //caso o vértice não foi descoberto
-            DFSvisit(G, u); //percorre o vértice
-    }
+    DFSvisit(G, u); //percorre o vértice
 
     delete [] colors;
     delete [] parents;
