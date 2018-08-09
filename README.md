@@ -29,7 +29,7 @@
   * Guarda valores mantendo-os em ordem, com o maior a direita e o menor a esquerda
     * Buscar: O(h) | Inserir: O(h) | Remover: O(h)
 
-## *Estrutuda de Dados Avançada:*
+## *Estrutura de Dados Avançada:*
 
 * Árvore Rubro Negra
   * Árvore binária balanceada em que a altura e mantida sempre proxima de log n
@@ -55,3 +55,5 @@
     * Descobre cada vértice que e alcançado por u, calculando sua menor distância para cada vértice v
   * Busca em Profundidade
     * Avança no grafo até alcançar um vértice que não possui nenhum vértice adjacente incalcançado. Após percorrer este vértice, retorna ao vértice anterior repetindo o processo.
+
+## *Projeto e Análise de Algorítimos:*
