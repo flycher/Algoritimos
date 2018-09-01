@@ -1,5 +1,8 @@
+#ifndef GUARD_counting_sort_h
+#define GUARD_counting_sort_h
 //maior numero no array
-const int MAX = 1000001;
+
+const int MAX = 1000010;
 
 //recebe o array com numeros naturais até MAX e seu tamanho
 void countingSort(int* arr, int size)
@@ -23,3 +26,5 @@ void countingSort(int* arr, int size)
         }
     }
 }
+
+#endif

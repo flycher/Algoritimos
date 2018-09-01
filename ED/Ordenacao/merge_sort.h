@@ -1,4 +1,7 @@
 //recebe o array, os indices inicial, do meio e final
+#ifndef GUARD_merge_sort_h
+#define GUARD_merge_sort_h
+
 void merge(int* arr, int left, int mid, int right)
 {
     //l e r recebem os tamanhos dos subarray da esquerda e direita
@@ -59,3 +62,5 @@ void mergeSort(int* arr, int left, int right)
         merge(arr, left, mid, right);
     }
 }
+
+#endif

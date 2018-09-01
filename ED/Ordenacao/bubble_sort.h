@@ -1,3 +1,6 @@
+#ifndef GUARD_bubble_sort_h
+#define GUARD_bubble_sort_h
+
 //troca os elementos de posição
 void swap(int *a, int *b)
 {
@@ -27,3 +30,5 @@ void bubbleSort(int* arr, int size)
         }
     }
 }
+
+#endif

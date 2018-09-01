@@ -1,3 +1,6 @@
+#ifndef GUARD_fila_h
+#define GUARD_fila_h
+
 #include <iostream>
 
 template <class T>
@@ -68,3 +71,5 @@ void Fila<T>::dequeue()
         head = head % size;
     }
 };
+
+#endif

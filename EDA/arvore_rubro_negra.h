@@ -1,3 +1,6 @@
+#ifndef GUARD_arvore_rubro_negra_h
+#define GUARD_arvore_rubro_negra_h
+
 #include <iostream>
 
 enum rbtcolors { RED, BLACK };
@@ -523,3 +526,5 @@ void RBTree<T>::bshow_dual(rbtnode<T>* node, std::string heranca, std::ostream& 
     if(node != NIL && (node->left != NIL || node->right != NIL))
         bshow_dual(node->left, heranca + "l", fout);
 }
+
+#endif

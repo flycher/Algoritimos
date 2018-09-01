@@ -1,3 +1,6 @@
+#ifndef GUARD_fila_de_prioridade_h
+#define GUARD_fila_de_prioridade_h
+
 #include <iostream>
 #include <climits>
 
@@ -264,3 +267,5 @@ public:
         }
     };
 };
+
+#endif

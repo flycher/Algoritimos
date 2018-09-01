@@ -1,3 +1,6 @@
+#ifndef GUARD_lista_de_adjacencia_h
+#define GUARD_lista_de_adjacencia_h
+
 #include <list>
 
 class ListaDeAdjacencia
@@ -92,3 +95,5 @@ bool ListaDeAdjacencia::checkEdge(int u, int v)
 
     return false;
 };
+
+#endif

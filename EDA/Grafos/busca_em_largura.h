@@ -1,3 +1,6 @@
+#ifndef GUARD_busca_em_largura_h
+#define GUARD_busca_em_largura_h
+
 #include "lista_de_adjacencia.h"
 #include <climits>
 #include <queue>
@@ -54,3 +57,5 @@ std::pair<int*, int*> BFS(ListaDeAdjacencia& G, int s)
     delete [] parents;
     return std::make_pair(distances, parents); //retorna os arrays de distâncias e pais
 }
+
+#endif

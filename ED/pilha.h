@@ -1,3 +1,6 @@
+#ifndef GUARD_pilha_h
+#define GUARD_pilha_h
+
 #include <iostream>
 
 template <class T>
@@ -60,3 +63,5 @@ void Pilha<T>::pop()
     else
         top--;
 };
+
+#endif

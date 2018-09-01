@@ -1,3 +1,7 @@
+
+#ifndef GUARD_quick_sort_h
+#define GUARD_quick_sort_h
+
 #include <cstdlib>
 #include <iostream>
 
@@ -48,3 +52,5 @@ void quickSort(int* arr, int left, int right)
         quickSort(arr, q + 1, right);
     }
 }
+
+#endif

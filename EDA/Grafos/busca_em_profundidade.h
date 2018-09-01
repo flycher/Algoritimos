@@ -1,3 +1,6 @@
+#ifndef GUARD_busca_em_profundidade_h
+#define GUARD_busca_em_profundidade_h
+
 #include "lista_de_adjacencia.h"
 #include <list>
 #include <climits>
@@ -55,3 +58,5 @@ std::pair<int*, int*> DFS(ListaDeAdjacencia& G, int u)
     delete [] parents;
     return std::make_pair(discovered, finished); //retorna os arrays de tempo de descoberta e percorrimento
 };
+
+#endif

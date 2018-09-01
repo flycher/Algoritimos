@@ -1,4 +1,7 @@
+#ifndef GUARD_insertion_sort_h
+#define GUARD_insertion_sort_h
 //recebe o array que queremos ordenar e seu tamanho
+
 void insertionSort(int* arr, int size)
 {
     int key, i, j;
@@ -20,3 +23,5 @@ void insertionSort(int* arr, int size)
         arr[i + 1] = key;
     }
 }
+
+#endif

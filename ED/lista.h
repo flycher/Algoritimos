@@ -1,3 +1,6 @@
+#ifndef GUARD_lista_h
+#define GUARD_lista_h
+
 #include <iostream>
 
 template <class T>
@@ -118,3 +121,5 @@ void Lista<T>::listshow()
 
     std::cout << "NULL";
 };
+
+#endif

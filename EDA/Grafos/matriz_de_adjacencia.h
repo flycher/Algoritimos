@@ -1,3 +1,6 @@
+#ifndef GUARD_matriz_de_adjacencia_h
+#define GUARD_matriz_de_adjacencia_h
+
 #include <climits>
 
 class MatrizDeAdjacencia
@@ -134,3 +137,5 @@ bool MatrizDeAdjacencia::checkEdge(int u, int v)
         }
     }
 };
+
+#endif

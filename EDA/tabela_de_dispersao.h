@@ -1,3 +1,6 @@
+#ifndef GUARD_tabela_de_dispersao_h
+#define GUARD_tabela_de_dispersao_h
+
 #include <map>
 #include <math.h>
 
@@ -137,3 +140,5 @@ public:
         }
     }
 };
+
+#endif

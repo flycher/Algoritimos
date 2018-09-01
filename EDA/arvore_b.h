@@ -1,3 +1,6 @@
+#ifndef GUARD_arvore_b_h
+#define GUARD_arvore_b_h
+
 #include <iostream>
 #include <queue>
 
@@ -499,3 +502,5 @@ void BTree<T>::showBtree(btreenode<T>* node)
         }
     }
 };
+
+#endif

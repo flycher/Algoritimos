@@ -1,3 +1,6 @@
+#ifndef GUARD_arvore_binaria_de_busca_h
+#define GUARD_arvore_binaria_de_busca_h
+
 #include <iostream>
 
 template <class T>
@@ -310,3 +313,5 @@ void BSTree<T>::bshow_dual(bstnode<T>* node, std::string heranca, std::ostream& 
     if(node != nullptr && (node->left != nullptr || node->right != nullptr))
         bshow_dual(node->left, heranca + "l", fout);
 };
+
+#endif

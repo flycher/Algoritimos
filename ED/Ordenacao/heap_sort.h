@@ -1,4 +1,7 @@
 //troca os elementos de posição
+#ifndef GUARD_heap_sort_h
+#define GUARD_heap_sort_h
+
 void exchange(int *a, int *b)
 {
     int temp = *a;
@@ -77,3 +80,5 @@ void heapSort(int* arr, int size)
     for(i = 0; i < size; i++)
         arr[i] = heap[i + 1];
 }
+
+#endif

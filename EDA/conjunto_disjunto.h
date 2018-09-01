@@ -1,3 +1,6 @@
+#ifndef GUARD_conjunto_disjunto_h
+#define GUARD_conjunto_disjunto_h
+
 #include <iostream>
 
 class UnionFind
@@ -18,7 +21,7 @@ UnionFind::UnionFind(int max)
     pai = new int[max];
     peso = new int[max];
     qtd = new int[max];
-        
+
     for(int i = 0; i < max; i++)
         pai[i] = i;
 }
@@ -68,3 +71,5 @@ void UnionFind::join(int x, int y)
         }
     }
 }
+
+#endif

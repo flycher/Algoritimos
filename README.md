@@ -57,3 +57,5 @@
     * Avança no grafo até alcançar um vértice que não possui nenhum vértice adjacente incalcançado. Após percorrer este vértice, retorna ao vértice anterior repetindo o processo.
 
 ## *Projeto e Análise de Algoritimos:*
+
+* Problema x Instancia, Algoritimo, Completude, Corretude e Complexidade
