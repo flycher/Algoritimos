@@ -58,4 +58,4 @@
 
 ## *Projeto e Análise de Algoritimos:*
 
-* Problema x Instancia, Algoritimo, Completude, Corretude e Complexidade
+* Problema e Instancia, Algoritimo, Completude e Corretude, Eficiência de Algoritimos
