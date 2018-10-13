@@ -58,4 +58,8 @@
 
 ## *Projeto e Análise de Algoritimos:*
 
-* Problema e Instancia, Algoritimo, Completude e Corretude, Eficiência de Algoritimos
+* Problema e Instância, Algoritimos, Completude e Corretude, Eficiência de Algoritimos
+* Divisão e Conquista: Esta técnica consiste em dividir um problema maior recursivamente em problemas menores até que o problema possa ser resolvido diretamente. Então a solução do problema inicial é dada através da combinação dos resultados de todos os problemas menores computados. O algoritimo é dividido em 3 fases:
+    1. Divisão: o problema maior é dividido em problemas menores e os problemas menores obtidos são novamente divididos sucessivamente de maneira recursiva.
+    2. Conquista: o resultado do problema é calculado quando o problema é pequeno o suficiente.
+    3. Combinação: o resultado dos problemas menores são combinados até que seja obtida a solução do problema maior.
