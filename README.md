@@ -63,3 +63,12 @@
     1. Divisão: o problema maior é dividido em problemas menores e os problemas menores obtidos são novamente divididos sucessivamente de maneira recursiva.
     2. Conquista: o resultado do problema é calculado quando o problema é pequeno o suficiente.
     3. Combinação: o resultado dos problemas menores são combinados até que seja obtida a solução do problema maior.
+* Programação Dinâmica: Programação dinâmica é um método para a construção de algoritmos para a resolução de problemas computacionais, em especial os de otimização combinatória.Ela é aplicável a problemas nos quais a solução ótima pode ser computada a partir da solução ótima previamente calculada e memorizada - de forma a evitar recálculo - de outros subproblemas que, sobrepostos, compõem o problema original. O que um problema de otimização deve ter para que a programação dinâmica seja aplicável são duas principais características: subestrutura ótima e superposição de subproblemas. Podemos seguir 4 etapas para construir um algoritimo de PD:
+    1. Caracterizar a estrutura de uma solução ótima.
+        * Imaginar como se estruturar os dados de uma solucao ótima.
+    2. Definir recursivamente o valor de uma solução ótima.
+        * Aqui deve ocorrer subestrutura otima.
+    3. Computar o valor de uma solução ótima algoritmicamente
+        * D&C -> Memorização -> PD
+    4. Construir uma solução ótima a partir de informações computadas sobre as decisões tomadas pelo algoritmo anterior.
+        * Qual a melhor escolha tomada para cada sub-instancia?
