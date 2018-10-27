@@ -31,7 +31,7 @@ int msa(int V[], int n)
                 max = T[j];
         }
         max++;
-        T[i] = max;
+        T[i] = max; // tamanho da maior sequencia até i
         if(max > sol)
             sol = max;
     }

@@ -8,10 +8,10 @@ Estamos procurando um número natural k tal que k² ≤ n e (k + 1)² > n.
 
 int raizQuadrada(int n, double p, double q)
 {
-    double m = (p + q) / 2;
-    int x = m * m;
+    double m = (p + q) / 2; // o real no meio da 'faixa'
+    int x = m * m; // guarda sua potenciacao num inteiro
     if(x == n)
-        return m;
+        return m; // a funçao irá convergir no valor correto
     if(n < x)
         return raizQuadrada(n, p, m - 1);
     return raizQuadrada(n, m + 1, q);

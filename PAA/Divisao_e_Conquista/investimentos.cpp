@@ -14,6 +14,7 @@ melhores datas de compra e venda.
 
 typedef std::pair<int, int> pii;
 
+// Retorna o indice do menor elemento na faixa
 int minimo(int V[], int p, int q)
 {
     int m = q;
@@ -22,6 +23,7 @@ int minimo(int V[], int p, int q)
     return m;
 }
 
+// Retorna o indice do maior elemento na faixa
 int maximo(int V[], int p, int q)
 {
     int m = q;
@@ -30,6 +32,7 @@ int maximo(int V[], int p, int q)
     return m;
 }
 
+// Retorna os indices dos pares de maior diferença
 pii max3(int V[], pii a, pii b, pii c)
 {
     int x = V[a.second] - V[a.first];
@@ -49,8 +52,9 @@ pii investimentos(int V[], int p, int q)
     if(q <= p)
         return std::make_pair(0, 0);
     int m = (p + q) / 2;
-    int a = minimo(V, p, m);
-    int b = maximo(V, m + 1, q);
+    int a = minimo(V, p, m); // menor elemento da esquera
+    int b = maximo(V, m + 1, q); // maior elemento da direita
+    // retorna a maior diferenca entre o par encontrado e as faixas
     return max3(V, std::make_pair(a, b), investimentos(V, p, m), investimentos(V, m + 1, q));
 }
 

@@ -1,3 +1,7 @@
+/*
+Calcula o numero de fibonacci usando programação dinâmica.
+*/
+
 #include <bits/stdc++.h>
 
 int fibPD(int n)

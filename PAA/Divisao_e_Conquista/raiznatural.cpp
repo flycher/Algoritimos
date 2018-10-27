@@ -1,6 +1,12 @@
+/*
+Você deve escrever uma função de Divisão e Conquista para determinar, dados
+dois números naturais v e n, determine se existe algum número natural 
+k tal que v^k = n. Sua função deve ter complexidade O(lg n).
+*/
+
 #include <bits/stdc++.h>
 
-bool aux(int v, int n, int l, int r)
+bool root(int v, int n, int l, int r)
 {
     if(l <= r)
     {
@@ -8,9 +14,9 @@ bool aux(int v, int n, int l, int r)
         int x = pow(v, m);
 
         if(x > n)
-            return aux(v, n, l, m - 1);
+            return root(v, n, l, m - 1);
         else if(x < n)
-            return aux(v, n, m + 1, r);
+            return root(v, n, m + 1, r);
         else
             return true;
     }
@@ -32,8 +38,8 @@ char raizDC(int v, int n)
         l = r;
         r = r * 2;
     }
-
-    if(aux(v, n, l, r))
+    // encontramos os expoentes de 2 em que a raiz se encontra
+    if(root(v, n, l, r))
         return 'V';
     return 'F';
 }

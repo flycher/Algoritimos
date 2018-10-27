@@ -10,7 +10,7 @@ retorne o índice em que ocorre o pico desse vetor.
 
 int buscaPico(int V[], int p, int q)
 {
-    if(p == q - 1)
+    if(p == q - 1) // Quando existe apenas 2 elementos na faixa, retorna o maior
     {
         if(V[p] > V[q])
             return p;
@@ -19,11 +19,11 @@ int buscaPico(int V[], int p, int q)
     if(p == q || V[p] > V[p + 1])
         return p;
     int m = (p + q) / 2;
-    if(V[m] < V[m - 1])
+    if(V[m] < V[m - 1]) // O pico esta na esquerda
         return buscaPico(V, p , m - 1);
-    else if(V[m] < V[m + 1])
+    else if(V[m] < V[m + 1]) // O pico esta na direita
         return buscaPico(V, m + 1, q);
-    return m;
+    return m; // Se V[m] e maior que seus adjacentes, encontramos o pico
 }
 
 int main()

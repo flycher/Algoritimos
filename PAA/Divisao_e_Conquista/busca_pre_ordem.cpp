@@ -7,20 +7,21 @@ Divisão e Conquista que, dado esse vetor V e um elemento x, determina se x ∈ 
 
 #include <bits/stdc++.h>
 
+// Retorna o indice do filho direito de r em V
 int filhoDireito(int V[], int r, int p, int q)
 {
     int m;
     while(p < q)
     {
         m = (p + q) / 2;
-        if(V[m] > r)
+        if(V[m] > r) // m pode ser filho direito
             q = m;
-        else
+        else // m não é o filho direito
             p = m + 1;
     }
-    if(V[q] > r)
+    if(V[q] > r) // Achamos o filho direito
         return q;
-    return -1;
+    return -1; // r não tem filho direito
 }
 
 bool buscaPreOrdem(int V[], int p, int q, int x)
@@ -36,9 +37,9 @@ bool buscaPreOrdem(int V[], int p, int q, int x)
         {
             if(d != -1)
                 return buscaPreOrdem(V, d, q, x);
-            return false;
+            return false; // x e maior que r e r não tem filho direito
         }
-        if(d == -1)
+        if(d == -1) // o restante da faixa é subarvore esquera de r
             d = q;
         return buscaPreOrdem(V, e, d, x);
     }

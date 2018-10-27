@@ -3,9 +3,9 @@
 std::string prefixoComum(std::string l, std::string r)
 {
     int n, i = 0;
-    l.length() < r.length() ? n = l.length() : n = r.length();
+    l.length() < r.length() ? n = l.length() : n = r.length(); // menor string
     std::string s = "";
-    while(l[i] == r[i])
+    while(i < n && l[i] == r[i]) // adiciona prefixos a s
     {
         s += l[i];
         i++;

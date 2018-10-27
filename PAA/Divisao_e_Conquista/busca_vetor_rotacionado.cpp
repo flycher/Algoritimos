@@ -27,6 +27,7 @@ int buscaBinaria(int V[], int p, int q, int x)
     return -1;
 }
 
+// Encontra o indice em que o vetor foi deslocado
 int achaK(int V[], int p, int q)
 {
     if((V[q] >= V[p]) || p == q)
@@ -42,8 +43,8 @@ int achaK(int V[], int p, int q)
 int buscaRot(int V[], int n, int x)
 {
     int k = achaK(V, 0, n);
-    int l = buscaBinaria(V, 0, k - 1, x);
-    int r = buscaBinaria(V, k, n - 1, x);
+    int l = buscaBinaria(V, 0, k - 1, x); // vetor ordenado esquerdo
+    int r = buscaBinaria(V, k, n - 1, x); // vetor ordenado direito
     return (l + r) + 1;
 }
 

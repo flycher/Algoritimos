@@ -7,6 +7,7 @@ Seu algoritmo deve ter complexidade Θ(lg n)
 
 #include <bits/stdc++.h>
 
+// Retorna o indice de x ou de seu antecessor em V
 int lower(int V[], int p, int q, int x)
 {
     int ant = -1;
@@ -27,6 +28,7 @@ int lower(int V[], int p, int q, int x)
     return ant;
 }
 
+// Retorna o indice de x ou de seu antecessor em V
 int upper(int V[], int p, int q, int x)
 {
     int suc = -1;
