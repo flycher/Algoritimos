@@ -71,5 +71,5 @@ int main()
         for(int j = 0; j < w; j++)
             std::cin >> M[i][j]; // preenche a matriz
 
-    std::cout << ladra(M, h, w);
+    std::cout << ladra(M, h, w) << '\n';
 }

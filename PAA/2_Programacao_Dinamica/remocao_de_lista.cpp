@@ -49,5 +49,5 @@ int main()
             T[i][j] = -1;
     }
 
-    std::cout << remove_lista(v, n - 1, 0, n - 1, T);
+    std::cout << remove_lista(v, n - 1, 0, n - 1, T) << '\n';
 }
