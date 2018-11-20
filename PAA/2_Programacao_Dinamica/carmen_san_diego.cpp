@@ -19,11 +19,6 @@ obter sem disparar armadilhas.
 
 #include <bits/stdc++.h>
 
-int max(int a, int b)
-{
-    return a > b ? a : b;
-}
-
 int ladrilhos(int** & M, int h, int w, int p, int q, int** & T)
 {
     if(p >= h || q >= w || p < 0 || q < 0) // passando indices invalidos
@@ -37,7 +32,7 @@ int ladrilhos(int** & M, int h, int w, int p, int q, int** & T)
     int c = ladrilhos(M, h, w, p + 1, q + 1, T); // diagonal inferior direita
 
     // salva na matriz de memorização o maior valor e retorna
-    return T[p][q] = M[p][q] + max(a, max(b, c));
+    return T[p][q] = M[p][q] + std::max(a, std::max(b, c));
 }
 
 int ladra(int** & M, int h, int w)
@@ -54,7 +49,7 @@ int ladra(int** & M, int h, int w)
     // com a função ladrilhos, veremos o melhor caminho que podemos tomar
     // se decidirmos começão por cada coluna, guardando o maior encontrado em maior
     for(int i = 0; i < w; i++)
-        maior = max(maior, ladrilhos(M, h, w, 0, i, T));
+        maior = std::max(maior, ladrilhos(M, h, w, 0, i, T));
 
     return maior;
 }

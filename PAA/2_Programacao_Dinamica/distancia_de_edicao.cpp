@@ -11,16 +11,6 @@ a distância de Levenshtein entre elas.
 
 #include <bits/stdc++.h>
 
-int min3(int a, int b, int c)
-{
-    if(a < b && a < c)
-        return a;
-    else if(b < c)
-        return b;
-    else
-        return c;
-}
-
 int dif(char a, char b)
 {
     return a == b ? 0 : 1;
@@ -44,7 +34,7 @@ int distanciaDeEdicao(std::string A, std::string B)
             // guardamos o minimo entre os considerar os A[i] e B[j] distantes em 1
             // 'descartando' A[i] ou B[j] e comparando A[i] == A[j] e 'descartando' ambos
             // em dif, se A[i] == B[j], consideramos a distancia entre eles em 0
-            T[i][j] = min3(1 + T[i - 1][j], 1 + T[i][j - 1], dif(A[i - 1], B[j - 1]) + T[i - 1][j - 1]);
+            T[i][j] = std::min(std::min(1 + T[i - 1][j], 1 + T[i][j - 1]), dif(A[i - 1], B[j - 1]) + T[i - 1][j - 1]);
         }
     }
 

@@ -17,11 +17,6 @@ disposto de forma que os vizinhos de i são exatamente i − 1 e i + 1,
 
 #include <bits/stdc++.h>
 
-int max(int a, int b)
-{
-    return a > b ? a : b;
-}
-
 std::vector<int> vizinhos(int v[], int n)
 {
     // a matriz de memorização guardará apenas 2 valores para cada elemento
@@ -36,7 +31,7 @@ std::vector<int> vizinhos(int v[], int n)
     for(int i = 1; i < n; i++)
     {
         // o valor atual maximo não incluindo o elemento
-        sem = max(T[i - 1][0], T[i - 1][1]);
+        sem = std::max(T[i - 1][0], T[i - 1][1]);
 
         T[i][0] = T[i - 1][1] + v[i]; // inclui o elemento com o valor do anterior não incluido
         T[i][1] = sem;

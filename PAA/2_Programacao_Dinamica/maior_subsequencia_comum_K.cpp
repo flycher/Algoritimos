@@ -15,11 +15,6 @@ menos k elementos nas sequências dadas.
 
 #include <bits/stdc++.h>
 
-int max(int a, int b)
-{
-    return a > b ? a : b;
-}
-
 int lcsK(std::string x, int i, std::string y, int j, int k, int** & T)
 {
     if(T[i][j] != -1) // se já calculamos para estes indices
@@ -38,7 +33,7 @@ int lcsK(std::string x, int i, std::string y, int j, int k, int** & T)
         return T[i][j] = c + lcsK(x, i - c, y, j - c, k, T);
         // guardamos o resultado na matriz, fazendo a busca desconsiderando o que já contamos
     // não conseguindo a sequencia tamanho k procuramos o maior entre desconsiderar o ultimo de x ou y
-    return max(lcsK(x, i - 1, y, j, k, T), lcsK(x, i, y, j - 1, k, T));
+    return std::max(lcsK(x, i - 1, y, j, k, T), lcsK(x, i, y, j - 1, k, T));
 }
 
 int maior_subsequencia_comum_k(std::string A, std::string B, int k)

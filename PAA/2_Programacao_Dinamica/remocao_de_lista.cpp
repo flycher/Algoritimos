@@ -11,11 +11,6 @@ com os números escolhidos a cada passo destacados.
 
 #include <bits/stdc++.h>
 
-int max(int a, int b)
-{
-    return a > b ? a : b;
-}
-
 int remove_lista(int E[], int n, int i, int j, int** & T)
 {
     if(i > n || j > n) // passando indices invalidos
@@ -28,7 +23,7 @@ int remove_lista(int E[], int n, int i, int j, int** & T)
     int maximo = -INT_MAX;
     for(int k = i; k < j; k++)
         // guardaremos o maior para cada possivel sequencia de subtração
-        maximo = max(maximo, remove_lista(E, n, k + 1, j, T) - remove_lista(E, n, i, k, T));
+        maximo = std::max(maximo, remove_lista(E, n, k + 1, j, T) - remove_lista(E, n, i, k, T));
 
     return T[i][j] = maximo; // retornamos a maior encontrada
 }

@@ -14,11 +14,6 @@ a melhor das opções seria instalar pedágios nos marcos x[2] e x[3], pois obte
 
 #include <bits/stdc++.h>
 
-int max(int a, int b)
-{
-    return a > b ? a : b;
-}
-
 std::vector<int> maior_pedagio(int X[], int R[], int n)
 {
     int T[n][2]; // tabela de memorização
@@ -45,7 +40,7 @@ std::vector<int> maior_pedagio(int X[], int R[], int n)
             }
             else // se a distância não é valida
             {
-                sem = max(sem, T[j][0]); // atualizamos o valor de maxímo sem com o valor em j se maior
+                sem = std::max(sem, T[j][0]); // atualizamos o valor de maxímo sem com o valor em j se maior
                 j--; // olharemos o próximo posto
             }
         }

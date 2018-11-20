@@ -12,11 +12,6 @@ seria ((1 + 2) ∗ (3 + 4)) ∗ 5, resultando em 105.
 
 #include <bits/stdc++.h>
 
-int max(int a, int b)
-{
-    return a > b ? a : b;
-}
-
 int parentisa(std::string E, int i, int j, int** & T)
 {
     if(i == j)
@@ -29,9 +24,9 @@ int parentisa(std::string E, int i, int j, int** & T)
     for(int k = i + 1; k < j; k+=2) // o k marca apenas as operações
     {
         if(E[k] == '+')
-            maior = max(maior, parentisa(E, i, k - 1, T) + parentisa(E, k + 1, j, T));
+            maior = std::max(maior, parentisa(E, i, k - 1, T) + parentisa(E, k + 1, j, T));
         if(E[k] == '*')
-            maior = max(maior, parentisa(E, i, k - 1, T) * parentisa(E, k + 1, j, T));
+            maior = std::max(maior, parentisa(E, i, k - 1, T) * parentisa(E, k + 1, j, T));
     }
 
     return T[i][j] = maior;
