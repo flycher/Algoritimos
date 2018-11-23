@@ -56,7 +56,7 @@ int main()
     int x;
     std::cin >> x;
     if(buscaPreOrdem(V, 0, n - 1, x))
-        std::cout << 'V' << '\n';
+        std::cout << 'V' << std::endl;
     else
-        std::cout << 'F' << '\n';
+        std::cout << 'F' << std::endl;
 }

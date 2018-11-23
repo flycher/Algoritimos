@@ -35,7 +35,7 @@ int main()
     for(int i = 0; i < n; i++)
         std::cin >> moedas[i];
     if(troco_ou_bala(troco, moedas, n))
-        std::cout << "troco" << '\n';
+        std::cout << "troco" << std::endl;
     else
-        std::cout << "balinha" << '\n';
+        std::cout << "balinha" << std::endl;
 }

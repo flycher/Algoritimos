@@ -56,7 +56,7 @@ void print_parens(int **S, int i, int j)
 void mult_mat_cadeia(int D[], int n)
 {
     std::pair<int, int**> ans = mcm(D, n);
-    std::cout << ans.first << '\n';
+    std::cout << ans.first << std::endl;
     print_parens(ans.second, 1, n);
 }
 
@@ -68,5 +68,5 @@ int main()
     for(int i = 0; i < n; i++)
         std::cin >> D[i];
     mult_mat_cadeia(D, n - 1); // existem n - 1 matrizes
-    std::cout << '\n';
+    std::cout << std::endl;
 }

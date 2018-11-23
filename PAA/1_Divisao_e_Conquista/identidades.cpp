@@ -25,8 +25,8 @@ int main()
     for(int i = 0; i < n; i++)
         std::cin >> V[i];
     if(identidade(V, 0, n - 1))
-        std::cout << 'V' << '\n';
+        std::cout << 'V' << std::endl;
     else
-        std::cout << 'F' << '\n';
+        std::cout << 'F' << std::endl;
 
 }

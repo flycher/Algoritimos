@@ -63,5 +63,5 @@ int main()
 	std::string parens;
 	std::cin >> parens;
 
-	std::cout << parenteses(parens) << '\n';
+	std::cout << parenteses(parens) << std::endl;
 }

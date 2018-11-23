@@ -19,40 +19,34 @@ obter sem disparar armadilhas.
 
 #include <bits/stdc++.h>
 
-int ladrilhos(int** & M, int h, int w, int p, int q, int** & T)
-{
-    if(p >= h || q >= w || p < 0 || q < 0) // passando indices invalidos
-        return 0;
-
-    if(T[p][q] != -1) // se o resultado ja foi salvo na memorização
-        return T[p][q];
-
-    int a = ladrilhos(M, h, w, p + 1, q - 1, T); // diagonal inferior esquerda
-    int b = ladrilhos(M, h, w, p + 1, q, T); // centro
-    int c = ladrilhos(M, h, w, p + 1, q + 1, T); // diagonal inferior direita
-
-    // salva na matriz de memorização o maior valor e retorna
-    return T[p][q] = M[p][q] + std::max(a, std::max(b, c));
-}
-
 int ladra(int** & M, int h, int w)
 {
-    int maior = -1; // maior numero de joias atual
-    int **T = new int*[h]; // matriz de memorização
-    for(int i = 0; i < h; i++)
+    int T[h][w];
+
+    // preencheremos a matriz de baixo para cima
+    for(int j = 0; j < w; j++)
+        T[h - 1][j] = M[h - 1][j]; // a ultima linha tem os mesmos valores da matriz de joias
+
+    for(int i = h - 2; i >= 0; i--)
     {
-        T[i] = new int[w];
         for(int j = 0; j < w; j++)
-            T[i][j] = -1;
+        {
+            // para cada um, olhamos o maior entre os de baixo possiveis e somamos ao atual
+            int a = j - 1 >= 0 ? T[i + 1][j - 1] : -1;
+            int b = T[i + 1][j];
+            int c = j + 1 < w ? T[i + 1][j + 1] : -1;
+            T[i][j] = M[i][j] + std::max(a, std::max(b, c));
+        }
     }
 
-    // com a função ladrilhos, veremos o melhor caminho que podemos tomar
-    // se decidirmos começão por cada coluna, guardando o maior encontrado em maior
+    // no fim, percorremos a primeira linha e salvamos o maior valor possivel
+    int maior = -1;
     for(int i = 0; i < w; i++)
-        maior = std::max(maior, ladrilhos(M, h, w, 0, i, T));
+        maior = std::max(maior, T[0][i]);
 
     return maior;
 }
+
 
 int main()
 {
@@ -66,5 +60,5 @@ int main()
         for(int j = 0; j < w; j++)
             std::cin >> M[i][j]; // preenche a matriz
 
-    std::cout << ladra(M, h, w) << '\n';
+    std::cout << ladra(M, h, w) << std::endl;
 }

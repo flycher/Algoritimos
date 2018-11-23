@@ -33,5 +33,5 @@ int main()
     int V[n];
     for(int i = 0; i < n; i++)
         std::cin >> V[i];
-    std::cout << buscaPico(V, 0, n - 1) <<'\n';
+    std::cout << buscaPico(V, 0, n - 1) <<std::endl;
 }

@@ -21,5 +21,5 @@ int main()
 {
     int n;
     std::cin >> n;
-    std::cout << raizQuadrada(n, 1, n) << '\n';
+    std::cout << raizQuadrada(n, 1, n) << std::endl;
 }

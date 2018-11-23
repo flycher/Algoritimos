@@ -39,5 +39,5 @@ int main()
     for(int i = 0; i < n; i++)
         std::cin >> V[i];
     pii mp = menorPar(V, 0, n - 1);
-    std::cout << '(' << mp.second << ',' << mp.first << ')' << '\n';
+    std::cout << '(' << mp.second << ',' << mp.first << ')' << std::endl;
 }

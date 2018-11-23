@@ -67,5 +67,5 @@ int main()
     std::vector<int> pessoas = vizinhos(v, n);
     for(auto &e: pessoas)
         std::cout << e << ' ';
-    std::cout << '\n';
+    std::cout << std::endl;
 }

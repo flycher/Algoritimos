@@ -64,5 +64,5 @@ int main()
     int a, b;
     std::cin >> a >> b;
     std::pair<int, int> interv = buscaIntervalo(V, n - 1, a, b);
-    std::cout << '[' << interv.first << ',' << interv.second << ']' << '\n';
+    std::cout << '[' << interv.first << ',' << interv.second << ']' << std::endl;
 }

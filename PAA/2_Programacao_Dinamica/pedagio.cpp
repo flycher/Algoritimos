@@ -78,5 +78,5 @@ int main()
     std::vector<int> pedagios = maior_pedagio(X, R, n);
     for(auto &e: pedagios)
         std::cout << e << ' ';
-    std::cout << '\n';
+    std::cout << std::endl;
 }

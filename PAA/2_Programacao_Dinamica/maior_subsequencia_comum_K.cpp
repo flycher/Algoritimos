@@ -15,45 +15,41 @@ menos k elementos nas sequências dadas.
 
 #include <bits/stdc++.h>
 
-int lcsK(std::string x, int i, std::string y, int j, int k, int** & T)
+int lcs_K(std::string A, std::string B, int k)
 {
-    if(T[i][j] != -1) // se já calculamos para estes indices
-        return T[i][j];
+    int a = A.length(), b = B.length(); // tamanhos das strings
+    int** T = new int*[a + 1];
 
-    // se um dos indices e menor que k nao podemos montar uma subsequencia de tamanho ao menos k
-    if(i < k || j < k)
-        return 0;
-
-    int c = 0;
-    // percorremos comparando indices decrescentes de x e y enquanto estes são iguais
-    while(i - c > 0 && j - c > 0 && x[i - c - 1] == y[j - c - 1])
-        c++;
-    // se chegamos a caracteres diferentes, e temos pelomenos k iguais, estes podem formar a subsequencia
-    if(c >= k)
-        return T[i][j] = c + lcsK(x, i - c, y, j - c, k, T);
-        // guardamos o resultado na matriz, fazendo a busca desconsiderando o que já contamos
-    // não conseguindo a sequencia tamanho k procuramos o maior entre desconsiderar o ultimo de x ou y
-    return std::max(lcsK(x, i - 1, y, j, k, T), lcsK(x, i, y, j - 1, k, T));
-}
-
-int maior_subsequencia_comum_k(std::string A, std::string B, int k)
-{
-    int n = A.length(), m = B.length();
-    int **T = new int*[n + 1];
-    for(int i = 0; i <= n; i++)
+    for(int i = 0; i <= a; i++)
     {
-        T[i] = new int[m + 1];
-        for(int j = 0; j <= m; j++)
-            T[i][j] = -1;
+        T[i] = new int[b + 1];
     }
 
-    return lcsK(A, n, B, m, k, T); // passamos a matriz de memorização e as strings com os indices
+    // não percorremos a linha e coluna 0
+    // preenchemos a matriz inteira da esquerda para direita, de cima para baixo
+    for(int i = k; i <= a; i++)
+    {
+        for(int j = k; j <= b; j++)
+        {
+            int c = 0;
+            while(i - c > 0 && j - c > 0 && A[i - c - 1] == B[j - c - 1])
+                c++;
+            // caso os caracteres sejam iguais, adicionamos o valor da diagonal superior esquerda + 1
+            if(c >= k) T[i][j] = T[i - c][j - c] + c;
+            // caso contrario, adicionamos o valor maior entre acima e a esquerda
+            else T[i][j] = std::max(T[i - 1][j], T[i][j - 1]);
+        }
+    }
+
+    // o ultimo elemento da matriz armazena o tamanho da maior subsequencia
+    return T[a][b];
 }
+
 
 int main()
 {
     int k;
     std::string A, B;
     std::cin >> k >> A >> B;
-    std::cout << maior_subsequencia_comum_k(A, B, k) << '\n';
+    std::cout << lcs_K(A, B, k) << std::endl;
 }

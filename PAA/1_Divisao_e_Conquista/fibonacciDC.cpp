@@ -28,5 +28,5 @@ int main()
 {
     int n;
     std::cin >> n;
-    std::cout << fibDC(n) << '\n';
+    std::cout << fibDC(n) << std::endl;
 }

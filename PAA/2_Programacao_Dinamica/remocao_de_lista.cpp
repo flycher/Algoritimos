@@ -11,21 +11,28 @@ com os números escolhidos a cada passo destacados.
 
 #include <bits/stdc++.h>
 
-int remove_lista(int E[], int n, int i, int j, int** & T)
-{
-    if(i > n || j > n) // passando indices invalidos
-        return 0;
-    if(i == j) // se temos apenas 1 elemento na faixa
-        return E[i];
-    if(T[i][j] != -1) // se ja calculamos os indices i, j
-        return T[i][j];
+int remove_lista(int E[], int n){
+    int T[n][n];
 
-    int maximo = -INT_MAX;
-    for(int k = i; k < j; k++)
-        // guardaremos o maior para cada possivel sequencia de subtração
-        maximo = std::max(maximo, remove_lista(E, n, k + 1, j, T) - remove_lista(E, n, i, k, T));
+    for(int i = 0; i < n; i++){
+        T[i][i] = E[i]; // preenche a diagonal principal com os numeros
+    }
 
-    return T[i][j] = maximo; // retornamos a maior encontrada
+    // preenchemos o triangulo superior da matriz de baixo para cima, esquerda para direita
+    for(int i = n - 1; i >= 0; i--){
+        for(int j = i + 1; j < n; j++)
+        {
+            int maior = INT_MIN; // maior valor possivel das operações
+            for(int k = i; k < j; k++) // testamos todas as operações nessa faixa
+                if(k < n - 1)
+                {
+                    maior = std::max(maior, T[k + 1][j] - T[i][k]);
+                }
+            T[i][j] = maior; // guardamos o maior valor possivel
+        }
+    }
+
+    return T[0][n - 1]; // retorna o maior valor possivel
 }
 
 int main()
@@ -36,13 +43,5 @@ int main()
     for(int i = 0; i < n; i++)
         std::cin >> v[i];
 
-    int** T = new int*[n];
-    for(int i = 0; i < n; i++)
-    {
-        T[i] = new int[n];
-        for(int j = 0; j < n; j++)
-            T[i][j] = -1;
-    }
-
-    std::cout << remove_lista(v, n - 1, 0, n - 1, T) << '\n';
+    std::cout << remove_lista(v, n) << std::endl;
 }

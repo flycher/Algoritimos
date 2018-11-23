@@ -36,7 +36,7 @@ std::string maior_subsequencia_comum(std::string x, std::string y)
 {
     int **T = lcs(x, y);
     int i = x.length(), j = y.length();
-    std::cout << T[i][j] << '\n'; //t tamanhp da maior subsequencia comum
+    std::cout << T[i][j] << std::endl; //t tamanhp da maior subsequencia comum
     std::string s(T[i][j], '$'); // string em que a subsequencia sera armazenada
 
     while(i > 0 && j > 0) // enquanto os indices forem válidos
@@ -61,5 +61,5 @@ int main()
 {
     std::string x, y;
     std::cin >> x >> y;
-    std::cout << maior_subsequencia_comum(x, y) << '\n';
+    std::cout << maior_subsequencia_comum(x, y) << std::endl;
 }

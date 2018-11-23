@@ -66,5 +66,5 @@ int main()
     for(int i = 0; i < n; i++)
         std::cin >> V[i];
     pii inv = investimentos(V, 0, n - 1);
-    std::cout << inv.first << ',' << inv.second << '\n';
+    std::cout << inv.first << ',' << inv.second << std::endl;
 }

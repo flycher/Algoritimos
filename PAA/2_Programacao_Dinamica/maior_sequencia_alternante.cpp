@@ -45,5 +45,5 @@ int main()
     int V[n];
     for(int i = 0; i < n; i++)
         std::cin >> V[i];
-    std::cout << msa(V, n) << '\n';
+    std::cout << msa(V, n) << std::endl;
 }

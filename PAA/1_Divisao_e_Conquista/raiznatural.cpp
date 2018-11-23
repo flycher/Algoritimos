@@ -48,5 +48,5 @@ int main()
 {
     int v, n;
     std::cin >> v >> n;
-    std::cout << raizDC(v, n) << '\n';
+    std::cout << raizDC(v, n) << std::endl;
 }

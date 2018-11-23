@@ -29,5 +29,5 @@ int main()
     std::string words[n];
     for(int i = 0; i < n; i++)
         std::cin >> words[i];
-    std::cout << maiorPrefixoComum(words, 0, n - 1).length() << '\n';
+    std::cout << maiorPrefixoComum(words, 0, n - 1).length() << std::endl;
 }

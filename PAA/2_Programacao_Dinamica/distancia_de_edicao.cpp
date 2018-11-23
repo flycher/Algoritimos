@@ -45,5 +45,5 @@ int main()
 {
     std::string A, B;
     std::cin >> A >> B;
-    std::cout << distanciaDeEdicao(A, B) << '\n';
+    std::cout << distanciaDeEdicao(A, B) << std::endl;
 }

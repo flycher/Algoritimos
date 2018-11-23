@@ -57,5 +57,5 @@ int main()
         std::cin >> V[i];
     int x;
     std::cin >> x;
-    std::cout << buscaRot(V, n - 1, x) << '\n';
+    std::cout << buscaRot(V, n - 1, x) << std::endl;
 }

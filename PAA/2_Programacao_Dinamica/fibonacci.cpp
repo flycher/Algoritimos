@@ -18,5 +18,5 @@ int main()
 {
     int n;
     std::cin >> n;
-    std::cout << fibPD(n) << '\n';
+    std::cout << fibPD(n) << std::endl;
 }
