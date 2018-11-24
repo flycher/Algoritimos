@@ -14,10 +14,11 @@ seria ((1 + 2) ∗ (3 + 4)) ∗ 5, resultando em 105.
 
 typedef std::vector<int> vi;
 typedef std::vector<char> vc;
+typedef long long int lli;
 
-int parentisa(vi &nums, vc &ops){
+lli parentisa(vi &nums, vc &ops){
     int n = nums.size();
-    int T[n][n];
+    lli T[n][n];
 
     for(int i = 0; i < n; i++){
         T[i][i] = nums[i]; // preenchemos a diagonal principal com os numeros
@@ -28,7 +29,7 @@ int parentisa(vi &nums, vc &ops){
     {
         for(int j = i + 1; j < n; j++)
         {
-            int maior = INT_MIN; // maior valor possivel das operações
+            lli maior = INT_MIN; // maior valor possivel das operações
             for(int k = i; k < j; k++) // testamos todas as operações nessa faixa
             {
                 if(ops[k] == '+')
@@ -39,9 +40,8 @@ int parentisa(vi &nums, vc &ops){
                 {
                     maior = std::max(maior, T[i][k] * T[k + 1][j]);
                 }
-
-                T[i][j] = maior; // guardamos o maior valor possivel
             }
+            T[i][j] = maior; // guardamos o maior valor possivel
         }
     }
 
@@ -54,14 +54,6 @@ int main()
     std::string E;
     std::cin >> E;
     int n = E.length();
-
-    int** T = new int*[n];
-    for(int i = 0; i < n; i++)
-    {
-        T[i] = new int[n];
-        for(int j = 0; j < n; j++)
-            T[i][j] = -1;
-    }
 
     vi nums;
     vc ops;

@@ -24,10 +24,12 @@ int remove_lista(int E[], int n){
         {
             int maior = INT_MIN; // maior valor possivel das operações
             for(int k = i; k < j; k++) // testamos todas as operações nessa faixa
+            {
                 if(k < n - 1)
                 {
                     maior = std::max(maior, T[k + 1][j] - T[i][k]);
                 }
+            }
             T[i][j] = maior; // guardamos o maior valor possivel
         }
     }

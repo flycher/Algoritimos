@@ -21,12 +21,12 @@ std::vector<int> vizinhos(int v[], int n)
 {
     // a matriz de memorização guardará apenas 2 valores para cada elemento
     // o valor da subsequencia incluindo ele, na coluna 0, e sem ele, na coluna 1
-    int T[n][2];
+    double T[n][2];
     T[0][0] = v[0];
     T[0][1] = 0;
 
     std::vector<int> pessoas; // guadará a resposta
-    int sem;
+    double sem;
 
     for(int i = 1; i < n; i++)
     {
