@@ -72,3 +72,10 @@
         * D&C -> Memorização -> PD
     4. Construir uma solução ótima a partir de informações computadas sobre as decisões tomadas pelo algoritmo anterior.
         * Qual a melhor escolha tomada para cada sub-instancia?
+* Algoritmos Gulosos: Aplicáveis no contexto de problemas de otimização. Funcionam de forma similar aos de PD no que se refere à forma de construção de soluções, tentado economizar tempo ao definir critérios de escolha para a construção de uma solução, em vez de testar várias possibilidades. Os critérios de escolha constituem o que chamamos de escolha gulosa, que podem ou não culminar em uma solução ótima, a depender das escolhas feitas. Escolhas gulosas sempre devem construir uma solução viável.
+
+* * Para que um algoritmo guloso seja considerado correto devemos observar:
+    1. Caracterização de uma solução ótima.
+    2. Critérios de escolha gulosa.
+    3. Subestrutura ótima do problema
+* * Nem todos os problemas de otimização aceitam algoritmos gulosos corretos.
