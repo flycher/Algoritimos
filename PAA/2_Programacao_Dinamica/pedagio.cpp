@@ -29,7 +29,7 @@ std::vector<int> maior_pedagio(int X[], int R[], int n)
     {
         com = R[i]; // guarda o valor maximo ate i com X[i]
         sem = 0; // guarda o valor maximo ate i sem X[i]
-        j = i;
+        j = i - 1;
         while(j >= 0) // a quantidade máxima de execuções desse loop é 5
         {
             if(X[i] - X[j] >= 5) // se temos uma distância em distâcia válida
