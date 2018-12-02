@@ -19,38 +19,50 @@ typedef struct
     int adicoes, remocoes;
 } mudancas;
 
-mudancas diff(int i, int j, int n, int m, std::string A, std::string B, mudancas** & T)
+mudancas diff(std::string A, std::string B)
 {
-    if(i > n)
+    // percorreremos as strings e matriz do final para o começo
+    int n = A.size(), m = B.size();
+    mudancas T[n + 1][m + 1];
+
+    // preenchemos a coluna m com as alterações entre vazio e B
+    for(int i = n; i >= 0 ; i--)
     {
-        mudancas resp;
-        resp.remocoes = 0;
-        resp.adicoes = std::max(m - j + 1, 0);
-        return resp;
+        mudancas def;
+        def.adicoes = 0;
+        def.remocoes = n - i;
+        T[i][m] = def;
     }
-    if(j > m)
+
+    // preenchemos a linha n com as alterações entre vazio e A
+    for(int j = m; j >= 0; j--)
     {
-        mudancas resp;
-        resp.adicoes = 0;
-        resp.remocoes = std::max(n - i + 1, 0);
-        return resp;
+        mudancas def;
+        def.adicoes = m - j;
+        def.remocoes = 0;
+        T[n][j] = def;
     }
-    if(T[i][j].adicoes != -1)
-        return T[i][j];
 
-    if(A[i] == B[j])
-        return T[i][j] = diff(i + 1, j + 1, n, m, A, B,  T);
+    for(int i = n - 1; i >= 0; i--)
+    {
+        for(int j = m - 1; j >= 0; j--)
+        {
+            if(A[i] == B[j]) // mantemos o caractere caso forem iguais
+                T[i][j] = T[i + 1][j + 1];
+            else
+            {
+                mudancas remover = T[i + 1][j]; // removemos o caractere de A
+                remover.remocoes++;
+                mudancas adicionar = T[i][j + 1]; // adicionamos o caractere a A
+                adicionar.adicoes++;
+                int rem = remover.remocoes + remover.adicoes;
+                int add = adicionar.remocoes + adicionar.adicoes;
+                T[i][j] = rem < add ? remover : adicionar; // adicionamos a matriz o que gera o menor resultado
+            }
+        }
+    }
 
-    mudancas remover = diff(i + 1, j, n, m, A, B, T);
-    remover.remocoes++;
-    mudancas adicionar = diff(i, j + 1, n, m, A, B, T);
-    adicionar.adicoes++;
-
-    if(remover.remocoes + remover.adicoes < adicionar.remocoes + adicionar.adicoes)
-        return T[i][j] = remover;
-    else
-        return T[i][j] = adicionar;
-
+    return T[0][0]; // retornamos a diferença
 }
 
 int main()
@@ -58,7 +70,7 @@ int main()
     int i, j;
     std::cin >> i >> j;
     std::string A, B, C;
-
+    //substituiremos as quebras de linha por um caractere, transformando o texto em uma string
     std::getline(std::cin, C);
     std::getline(std::cin, A);
     i--;
@@ -80,16 +92,6 @@ int main()
         B += C;
     }
 
-    int n = A.size(), m = B.size();
-
-    mudancas** T = new mudancas*[n];
-    for(int i = 0; i < n; i++)
-    {
-        T[i] = new mudancas[m];
-        for(int j = 0; j < m; j++)
-            T[i][j].adicoes = -1;
-    }
-
-    mudancas resp = diff(0, 0, n - 1, m - 1, A, B, T);
+    mudancas resp = diff(A, B);
     std::cout << resp.adicoes << ' ' << resp.remocoes << std::endl;
 }
