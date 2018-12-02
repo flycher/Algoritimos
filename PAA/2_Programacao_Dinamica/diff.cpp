@@ -25,7 +25,7 @@ mudancas diff(std::string A, std::string B)
     int n = A.size(), m = B.size();
     mudancas T[n + 1][m + 1];
 
-    // preenchemos a coluna m com as alterações entre vazio e B
+    // preenchemos a coluna m com as alterações para transformar A em vazio
     for(int i = n; i >= 0 ; i--)
     {
         mudancas def;
@@ -34,7 +34,7 @@ mudancas diff(std::string A, std::string B)
         T[i][m] = def;
     }
 
-    // preenchemos a linha n com as alterações entre vazio e A
+    // preenchemos a linha n com as alterações para transformar vazio em A
     for(int j = m; j >= 0; j--)
     {
         mudancas def;
@@ -70,8 +70,8 @@ int main()
     int i, j;
     std::cin >> i >> j;
     std::string A, B, C;
-    //substituiremos as quebras de linha por um caractere, transformando o texto em uma string
     std::getline(std::cin, C);
+    //substituiremos as quebras de linha por um caractere, transformando o texto em uma string
     std::getline(std::cin, A);
     i--;
     while(i)
