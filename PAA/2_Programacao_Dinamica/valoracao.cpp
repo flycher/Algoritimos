@@ -1,77 +1,51 @@
 /*
-Dada uma expressão aritmética não-parentizada, onde ocorrem as operações de adição e multiplica-
-ção, escreva um algoritmo de Programação Dinâmica para determinar qual é o maior valor que essa
-expressão pode assumir se decidirmos parentizá-la, dentre todas as parentizações possíveis. Imagine
-que a expressão será dada em uma lista onde o primeiro índice é um operando numérico e, a partir
-do segundo, temos alternadamente uma operação e outro operando numérico (em outras palavras, nos
-índices ímpares há operandos e nos pares há operações).
-Por exemplo: Se a expressão for E = [1 + 2 ∗ 3 + 4 ∗ 5], uma das possíveis parentizações
-dessa expressão seria (1 + 2) ∗ (3 + (4 ∗ 5)), resultando em 69, porém a que gera o maior dos resultados
-seria ((1 + 2) ∗ (3 + 4)) ∗ 5, resultando em 105.
+Seja L uma lista de n números inteiros. A cada momento você pode escolher dois números adjacentes
+na lista, eliminá-los e pôr em seu lugar o resultado da subtração do primeiro pelo segundo número
+escolhido, na ordem em que estavam na lista. Depois de realizar essa operação n − 1 vezes, na lista
+restará um único número m. Escreva um algoritmo de Programação Dinâmica que determina qual é o
+maior valor possível para m ao final dessas operações dados os números na lista inicial.
+Por exemplo: a sequência de operações a seguir gera o menor dos resultados para a lista L = [2 3 1 4],
+com os números escolhidos a cada passo destacados.
+[2, (3, 1), 4] → [2, (2, 4)] → [(2, -2)] → [4].
 */
 
 #include <bits/stdc++.h>
 
-typedef std::vector<int> vi;
-typedef std::vector<char> vc;
-typedef long long int lli;
-
-lli parentisa(vi &nums, vc &ops){
-    int n = nums.size();
-    lli T[n][n];
+int remove_lista(int E[], int n){
+    int Tmin[n][n]; // guardaremos o maior valor possível das operações
+    int Tmax[n][n]; // guardaremos o menor valor possível das operações
 
     for(int i = 0; i < n; i++){
-        T[i][i] = nums[i]; // preenchemos a diagonal principal com os numeros
+        // preenche a diagonal principal com os numeros do vetor
+        Tmin[i][i] = E[i];
+        Tmax[i][i] = E[i];
     }
 
     // preenchemos o triangulo superior da matriz de baixo para cima, esquerda para direita
-    for(int i = n - 1; i >= 0; i--)
-    {
+    for(int i = n - 1; i >= 0; i--){
         for(int j = i + 1; j < n; j++)
         {
-            lli maior = INT_MIN; // maior valor possivel das operações
+            int menor = INT_MAX; // menor valor possível das operações
+            int maior = INT_MIN; // maior valor possivel das operações
             for(int k = i; k < j; k++) // testamos todas as operações nessa faixa
             {
-                if(ops[k] == '+')
-                {
-                    maior = std::max(maior, T[i][k] + T[k + 1][j]);
-                }
-                else
-                {
-                    maior = std::max(maior, T[i][k] * T[k + 1][j]);
-                }
+                menor = std::min(menor, Tmin[i][k] - Tmax[k + 1][j]);
+                maior = std::max(maior, Tmax[i][k] - Tmin[k + 1][j]);
             }
-            T[i][j] = maior; // guardamos o maior valor possivel
+            Tmin[i][j] = menor; // guardamos o maior valor possivel
+            Tmax[i][j] = maior; // guardamos o menor valor possível
         }
     }
-
-    return T[0][n - 1]; // retorna o maior valor possivel
+    return Tmax[0][n - 1]; // retorna o maior valor possivel
 }
-
 
 int main()
 {
-    std::string E;
-    std::cin >> E;
-    int n = E.length();
-
-    vi nums;
-    vc ops;
-    std::string numero = "";
-
+    int n;
+    std::cin >> n;
+    int v[n];
     for(int i = 0; i < n; i++)
-    {
-        if(E[i] == '+' || E[i] == '*')
-        {
-            nums.push_back(std::stoi(numero));
-            numero = "";
-            ops.push_back(E[i]);
-        }
-        else
-            numero += E[i];
-    }
+        std::cin >> v[i];
 
-    nums.push_back(std::stoi(numero));
-
-    std::cout << parentisa(nums, ops) << std::endl;
+    std::cout << remove_lista(v, n) << std::endl;
 }
