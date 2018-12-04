@@ -44,7 +44,7 @@ std::vector<int> maior_pedagio(int X[], int R[], int n)
                 j--; // olharemos o próximo posto
             }
         }
-        T[i][0] = com; // guardamos o valor máximo ate i com este
+        T[i][0] = std::max(com, sem); // guardamos o valor máximo ate i com este
         T[i][1] = sem; // guardamos o valor máximo ate i sem este
     }
 

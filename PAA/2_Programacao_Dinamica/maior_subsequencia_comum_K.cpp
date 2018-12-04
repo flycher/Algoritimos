@@ -34,8 +34,8 @@ int lcs_K(std::string A, std::string B, int k)
             int c = 0;
             while(i - c > 0 && j - c > 0 && A[i - c - 1] == B[j - c - 1])
                 c++;
-            // caso os caracteres sejam iguais, adicionamos o valor da diagonal superior esquerda + 1
-            if(c >= k) T[i][j] = T[i - c][j - c] + c;
+            // caso os caracteres sejam iguais
+            if(c >= k) T[i][j] = std::max(T[i - c][j - c] + c, T[i - 1][j - 1] + 1);
             // caso contrario, adicionamos o valor maior entre acima e a esquerda
             else T[i][j] = std::max(T[i - 1][j], T[i][j - 1]);
         }
