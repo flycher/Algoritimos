@@ -9,59 +9,42 @@ Determine o mínimo de trocas necessárias para tornar uma parentização consis
 */
 
 #include <bits/stdc++.h>
-#define INF 999999
 
-int equilibra(std::string parens, int i, int n, int aberto, int** & T){
-
-	if(i > n){ // indice invalido
-		if(aberto == 0) // nenhum parentese errado
-			return 0;
-		else
-			return INF; // sequencia invalida
-	}
-
-	if(aberto == -1) // sequencia invalida
-        return INF;
-
-	if(T[i][aberto] != -1) // subproblema ja resolvido
-		return T[i][aberto];
-
-	int minimo = INF;
-
-	if(parens[i] == '(') // se for um parentese abrindo
-	{
-		minimo = std::min(minimo, equilibra(parens, i + 1, n, aberto + 1, T));
-		minimo = std::min(minimo, equilibra(parens, i + 1, n, aberto - 1, T) + 1);
-		// minimo será o menor entre manter o parentese abrindo, ou mudar para um fechando
-	}
-	else // se for um parentese abrindo
-	{
-		minimo = std::min(minimo, equilibra(parens, i + 1, n, aberto + 1, T) + 1);
-		minimo = std::min(minimo, equilibra(parens, i + 1, n, aberto - 1, T));
-		// minimo será o menor entre manter o parentese fechando, ou mudar para um abrindo
-	}
-
-	return T[i][aberto] = minimo;
-}
-
-int parenteses(std::string parens)
+int parenteses(std::string s)
 {
-    int n = parens.length();
-	int **T = new int*[n]; // tabela de memorização
-	for(int i = 0; i < n; i++)
-	{
-		T[i] = new int[n];
-		for(int j = 0; j < n; j++)
-			T[i][j] = -1;
-	}
+    int n = s.size();
+    int T[2][n + 1]; // guardaremos os parenteses abrindo na linha 0 e as inversões na 1
+    T[0][0] = 0;
+    T[1][0] = 0;
 
-	return equilibra(parens, 0, n - 1, 0, T);
+    for(int i = 1; i <= n; i++)
+    {
+        if(s[i - 1] == '(')
+        {
+            T[0][i] = T[0][i - 1] + 1; // aumenta a quantidade de parenteses abrindo
+            T[1][i] = T[1][i - 1]; // mantem as inversões
+        }
+        else
+        {
+            if(T[0][i - 1] == 0) // se não temos nenhum abrindo
+            {
+                T[0][i] = 1;
+                T[1][i] = T[1][i - 1] + 1; // invertemos o parentese fechando
+            }
+            else
+            {
+                T[0][i] = T[0][i - 1] - 1; // caso tenhamos parenteses abrindo
+                T[1][i] = T[1][i - 1]; // mantemos as inversões
+            }
+        }
+    }
+
+    return (T[0][n] / 2) + T[1][n]; // se temos mais de um abrindo, metade destes serão invertidos
 }
 
 int main()
 {
-	std::string parens;
-	std::cin >> parens;
-
-	std::cout << parenteses(parens) << std::endl;
+    std::string s;
+    std::cin >> s;
+    std::cout << parenteses(s) << std::endl;
 }
