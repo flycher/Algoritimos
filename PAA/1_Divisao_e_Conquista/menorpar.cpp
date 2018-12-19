@@ -5,8 +5,9 @@ V [i] e V [j] cuja diferença é a menor dentre todos os elementos do vetor.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-typedef std::pair<int, int> pii;
+typedef pair<int, int> pii;
 
 // Retorna os indices dos pares de menor diferença
 pii min3(int V[], pii x, pii y, pii z)
@@ -25,19 +26,19 @@ pii min3(int V[], pii x, pii y, pii z)
 pii menorPar(int V[], int p, int q)
 {
     if(q - p == 1) // retorna o par quando a faixa possui apenas 2 elementos
-        return std::make_pair(q, p);
+        return make_pair(q, p);
     int m = (q + p) / 2;
-    return min3(V, std::make_pair(m + 1, m),
+    return min3(V, make_pair(m + 1, m),
                 menorPar(V, p, m), menorPar(V, m, q));
 }
 
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n];
     for(int i = 0; i < n; i++)
-        std::cin >> V[i];
+        cin >> V[i];
     pii mp = menorPar(V, 0, n - 1);
-    std::cout << '(' << mp.second << ',' << mp.first << ')' << std::endl;
+    cout << '(' << mp.second << ',' << mp.first << ')' << endl;
 }

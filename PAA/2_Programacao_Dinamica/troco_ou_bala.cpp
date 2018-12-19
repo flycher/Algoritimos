@@ -9,6 +9,7 @@ Usando as moedas disponíveis, ele é capaz de nos dar o troco ou vamos ter que 
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 bool troco_ou_bala(int troco, int moedas[], int n)
 {
@@ -21,7 +22,7 @@ bool troco_ou_bala(int troco, int moedas[], int n)
             // guardamos no troco maximo atual o maior valor entre o atual e o troco
             // maximo possivel entre o troco maximo para um valor atual sem a moeda atual
             // somada com a moeda atual
-            T[i] = std::max(T[i], T[i - moedas[j]] + moedas[j]);
+            T[i] = max(T[i], T[i - moedas[j]] + moedas[j]);
 
     // se o troco maximo que podemos passar é igual ao troco que queremos
     return T[troco] == troco;
@@ -30,12 +31,12 @@ bool troco_ou_bala(int troco, int moedas[], int n)
 int main()
 {
 	int troco, n;
-    std::cin >> troco >> n;
+    cin >> troco >> n;
     int moedas[n];
     for(int i = 0; i < n; i++)
-        std::cin >> moedas[i];
+        cin >> moedas[i];
     if(troco_ou_bala(troco, moedas, n))
-        std::cout << "troco" << std::endl;
+        cout << "troco" << endl;
     else
-        std::cout << "balinha" << std::endl;
+        cout << "balinha" << endl;
 }

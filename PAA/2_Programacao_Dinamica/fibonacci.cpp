@@ -3,6 +3,7 @@ Calcula o numero de fibonacci usando programação dinâmica.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int fibPD(int n)
 {
@@ -17,6 +18,6 @@ int fibPD(int n)
 int main()
 {
     int n;
-    std::cin >> n;
-    std::cout << fibPD(n) << std::endl;
+    cin >> n;
+    cout << fibPD(n) << endl;
 }

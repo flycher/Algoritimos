@@ -11,6 +11,7 @@ alguns elementos do vetor, porém sem alterar a ordem relativa entre os que rest
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 bool dif(int a, int b)
 {
@@ -41,9 +42,9 @@ int msa(int V[], int n)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n];
     for(int i = 0; i < n; i++)
-        std::cin >> V[i];
-    std::cout << msa(V, n) << std::endl;
+        cin >> V[i];
+    cout << msa(V, n) << endl;
 }

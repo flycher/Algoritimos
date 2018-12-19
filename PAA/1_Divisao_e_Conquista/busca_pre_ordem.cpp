@@ -6,6 +6,7 @@ Divisão e Conquista que, dado esse vetor V e um elemento x, determina se x ∈ 
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 // Retorna o indice do filho direito de r em V
 int filhoDireito(int V[], int r, int p, int q)
@@ -49,14 +50,14 @@ bool buscaPreOrdem(int V[], int p, int q, int x)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n];
     for(int i = 0; i < n; i++)
-        std::cin >> V[i];
+        cin >> V[i];
     int x;
-    std::cin >> x;
+    cin >> x;
     if(buscaPreOrdem(V, 0, n - 1, x))
-        std::cout << 'V' << std::endl;
+        cout << 'V' << endl;
     else
-        std::cout << 'F' << std::endl;
+        cout << 'F' << endl;
 }

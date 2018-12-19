@@ -13,13 +13,14 @@ as alterações realizadas em função dessas operações.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 typedef struct
 {
     int adicoes, remocoes;
 } mudancas;
 
-mudancas diff(std::string A, std::string B)
+mudancas diff(string A, string B)
 {
     // percorreremos as strings e matriz do final para o começo
     int n = A.size(), m = B.size();
@@ -68,30 +69,30 @@ mudancas diff(std::string A, std::string B)
 int main()
 {
     int i, j;
-    std::cin >> i >> j;
-    std::string A, B, C;
-    std::getline(std::cin, C);
+    cin >> i >> j;
+    string A, B, C;
+    getline(cin, C);
     //substituiremos as quebras de linha por um caractere, transformando o texto em uma string
-    std::getline(std::cin, A);
+    getline(cin, A);
     i--;
     while(i)
     {
         i--;
-        std::getline(std::cin, C);
+        getline(cin, C);
         A += '$';
         A += C;
     }
 
-    std::getline(std::cin, B);
+    getline(cin, B);
     j--;
     while(j)
     {
         j--;
-        std::getline(std::cin, C);
+        getline(cin, C);
         B += '$';
         B += C;
     }
 
     mudancas resp = diff(A, B);
-    std::cout << resp.adicoes << ' ' << resp.remocoes << std::endl;
+    cout << resp.adicoes << ' ' << resp.remocoes << endl;
 }

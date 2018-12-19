@@ -10,6 +10,7 @@ com os números escolhidos a cada passo destacados.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int remove_lista(int E[], int n){
     int T[n][n];
@@ -27,7 +28,7 @@ int remove_lista(int E[], int n){
             {
                 if(k < n - 1)
                 {
-                    maior = std::max(maior, T[k + 1][j] - T[i][k]);
+                    maior = max(maior, T[k + 1][j] - T[i][k]);
                 }
             }
             T[i][j] = maior; // guardamos o maior valor possivel
@@ -40,10 +41,10 @@ int remove_lista(int E[], int n){
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int v[n];
     for(int i = 0; i < n; i++)
-        std::cin >> v[i];
+        cin >> v[i];
 
-    std::cout << remove_lista(v, n) << std::endl;
+    cout << remove_lista(v, n) << endl;
 }

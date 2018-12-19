@@ -18,6 +18,7 @@ obter sem disparar armadilhas.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int ladra(int** & M, int h, int w)
 {
@@ -35,14 +36,14 @@ int ladra(int** & M, int h, int w)
             int a = j - 1 >= 0 ? T[i + 1][j - 1] : -1;
             int b = T[i + 1][j];
             int c = j + 1 < w ? T[i + 1][j + 1] : -1;
-            T[i][j] = M[i][j] + std::max(a, std::max(b, c));
+            T[i][j] = M[i][j] + max(a, max(b, c));
         }
     }
 
     // no fim, percorremos a primeira linha e salvamos o maior valor possivel
     int maior = -1;
     for(int i = 0; i < w; i++)
-        maior = std::max(maior, T[0][i]);
+        maior = max(maior, T[0][i]);
 
     return maior;
 }
@@ -51,14 +52,14 @@ int ladra(int** & M, int h, int w)
 int main()
 {
     int h, w;
-    std::cin >> h >> w; // linhas e colunas da matriz
+    cin >> h >> w; // linhas e colunas da matriz
     int** M = new int*[h]; //
     for(int i = 0; i < h; i++)
         M[i] = new int[w];
 
     for(int i = 0; i < h; i++)
         for(int j = 0; j < w; j++)
-            std::cin >> M[i][j]; // preenche a matriz
+            cin >> M[i][j]; // preenche a matriz
 
-    std::cout << ladra(M, h, w) << std::endl;
+    cout << ladra(M, h, w) << endl;
 }

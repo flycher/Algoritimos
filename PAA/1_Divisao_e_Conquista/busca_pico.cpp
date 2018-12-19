@@ -7,6 +7,7 @@ retorne o índice em que ocorre o pico desse vetor.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int buscaPico(int V[], int p, int q)
 {
@@ -29,9 +30,9 @@ int buscaPico(int V[], int p, int q)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n];
     for(int i = 0; i < n; i++)
-        std::cin >> V[i];
-    std::cout << buscaPico(V, 0, n - 1) <<std::endl;
+        cin >> V[i];
+    cout << buscaPico(V, 0, n - 1) <<endl;
 }

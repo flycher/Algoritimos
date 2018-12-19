@@ -14,8 +14,9 @@ menos k elementos nas sequências dadas.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-int lcs_K(std::string A, std::string B, int k)
+int lcs_K(string A, string B, int k)
 {
     int a = A.length(), b = B.length(); // tamanhos das strings
     int** T = new int*[a + 1];
@@ -35,9 +36,9 @@ int lcs_K(std::string A, std::string B, int k)
             while(i - c > 0 && j - c > 0 && A[i - c - 1] == B[j - c - 1])
                 c++;
             // caso os caracteres sejam iguais
-            if(c >= k) T[i][j] = std::max(T[i - c][j - c] + c, T[i - 1][j - 1] + 1);
+            if(c >= k) T[i][j] = max(T[i - c][j - c] + c, T[i - 1][j - 1] + 1);
             // caso contrario, adicionamos o valor maior entre acima e a esquerda
-            else T[i][j] = std::max(T[i - 1][j], T[i][j - 1]);
+            else T[i][j] = max(T[i - 1][j], T[i][j - 1]);
         }
     }
 
@@ -49,7 +50,7 @@ int lcs_K(std::string A, std::string B, int k)
 int main()
 {
     int k;
-    std::string A, B;
-    std::cin >> k >> A >> B;
-    std::cout << lcs_K(A, B, k) << std::endl;
+    string A, B;
+    cin >> k >> A >> B;
+    cout << lcs_K(A, B, k) << endl;
 }

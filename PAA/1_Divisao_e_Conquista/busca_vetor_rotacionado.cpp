@@ -10,6 +10,7 @@ e encontra o índice em V em que se encontra um valor x buscado.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int buscaBinaria(int V[], int p, int q, int x)
 {
@@ -51,11 +52,11 @@ int buscaRot(int V[], int n, int x)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n];
     for(int i = 0; i < n; i++)
-        std::cin >> V[i];
+        cin >> V[i];
     int x;
-    std::cin >> x;
-    std::cout << buscaRot(V, n - 1, x) << std::endl;
+    cin >> x;
+    cout << buscaRot(V, n - 1, x) << endl;
 }

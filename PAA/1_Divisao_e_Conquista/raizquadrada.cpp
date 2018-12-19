@@ -5,6 +5,7 @@ Estamos procurando um número natural k tal que k² ≤ n e (k + 1)² > n.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int raizQuadrada(int n, double p, double q)
 {
@@ -20,6 +21,6 @@ int raizQuadrada(int n, double p, double q)
 int main()
 {
     int n;
-    std::cin >> n;
-    std::cout << raizQuadrada(n, 1, n) << std::endl;
+    cin >> n;
+    cout << raizQuadrada(n, 1, n) << endl;
 }

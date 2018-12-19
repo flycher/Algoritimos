@@ -13,8 +13,9 @@ a melhor das opções seria instalar pedágios nos marcos x[2] e x[3], pois obte
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-std::vector<int> maior_pedagio(int X[], int R[], int n)
+vector<int> maior_pedagio(int X[], int R[], int n)
 {
     int T[n][2]; // tabela de memorização
     int S[n]; // guarda o indice do posto valido de anterior a X[i]
@@ -40,15 +41,15 @@ std::vector<int> maior_pedagio(int X[], int R[], int n)
             }
             else // se a distância não é valida
             {
-                sem = std::max(sem, T[j][0]); // atualizamos o valor de maxímo sem com o valor em j se maior
+                sem = max(sem, T[j][0]); // atualizamos o valor de maxímo sem com o valor em j se maior
                 j--; // olharemos o próximo posto
             }
         }
-        T[i][0] = std::max(com, sem); // guardamos o valor máximo ate i com este
+        T[i][0] = max(com, sem); // guardamos o valor máximo ate i com este
         T[i][1] = sem; // guardamos o valor máximo ate i sem este
     }
 
-    std::vector<int> solucao; // guardará os pontos em que devemos construir
+    vector<int> solucao; // guardará os pontos em que devemos construir
     j = n - 1;
     while(j >= 0)
     {
@@ -67,16 +68,16 @@ std::vector<int> maior_pedagio(int X[], int R[], int n)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int X[n];
     for(int i = 0; i < n; i++)
-        std::cin >> X[i];
+        cin >> X[i];
     int R[n];
     for(int i = 0; i < n; i++)
-        std::cin >> R[i];
+        cin >> R[i];
 
-    std::vector<int> pedagios = maior_pedagio(X, R, n);
+    vector<int> pedagios = maior_pedagio(X, R, n);
     for(auto &e: pedagios)
-        std::cout << e << ' ';
-    std::cout << std::endl;
+        cout << e << ' ';
+    cout << endl;
 }

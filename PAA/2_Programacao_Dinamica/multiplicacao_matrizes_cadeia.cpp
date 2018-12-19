@@ -5,8 +5,9 @@ A1 * A2 * A3 * … * An para minimizar a quantidade de multiplicações escalare
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-std::pair<int, int**> mcm(int D[], int n)
+pair<int, int**> mcm(int D[], int n)
 {
     int T[n + 1][n + 1]; // matriz de multplicações escalares
     int **S = new int*[n + 1]; // matriz de soluções
@@ -38,35 +39,35 @@ std::pair<int, int**> mcm(int D[], int n)
         }
     }
 
-    return std::make_pair(T[1][n], S); // numero minimo de multiplicações e matriz de solução
+    return make_pair(T[1][n], S); // numero minimo de multiplicações e matriz de solução
 }
 
 void print_parens(int **S, int i, int j)
 {
-    if(i == j) std::cout << 'A' << i;
+    if(i == j) cout << 'A' << i;
     else
     {
-        std::cout << '(';
+        cout << '(';
         print_parens(S, i, S[i][j]);
         print_parens(S, S[i][j] + 1, j);
-        std::cout << ')';
+        cout << ')';
     }
 }
 
 void mult_mat_cadeia(int D[], int n)
 {
-    std::pair<int, int**> ans = mcm(D, n);
-    std::cout << ans.first << std::endl;
+    pair<int, int**> ans = mcm(D, n);
+    cout << ans.first << endl;
     print_parens(ans.second, 1, n);
 }
 
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int D[n]; // vetor de dimensões, onde D[0] == lin(A1), D[i] = col(Ai)
     for(int i = 0; i < n; i++)
-        std::cin >> D[i];
+        cin >> D[i];
     mult_mat_cadeia(D, n - 1); // existem n - 1 matrizes
-    std::cout << std::endl;
+    cout << endl;
 }

@@ -16,6 +16,7 @@ Reordenaremos o vetor com a ordem em que as licencas devem ser comprados
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 typedef struct
 {
@@ -29,21 +30,21 @@ bool ordena(licenca a, licenca b)
 
 void* licencas(licenca* & R, int n)
 {
-    std::sort(R, R + n, ordena);
+    sort(R, R + n, ordena);
 }
 
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     licenca* R = new licenca[n];
     for(int i = 0; i < n; i++)
     {
         R[i].n = i + 1;
-        std::cin >> R[i].r;
+        cin >> R[i].r;
     }
     licencas(R, n);
     for(int i = 0; i < n; i++)
-        std::cout << R[i].n << ' ';
-    std::cout << std::endl;
+        cout << R[i].n << ' ';
+    cout << endl;
 }

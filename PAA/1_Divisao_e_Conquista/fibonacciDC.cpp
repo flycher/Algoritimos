@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+using namespace std;
 
 unsigned long fibDC(unsigned long n)
 {
@@ -27,6 +28,6 @@ unsigned long fibDC(unsigned long n)
 int main()
 {
     int n;
-    std::cin >> n;
-    std::cout << fibDC(n) << std::endl;
+    cin >> n;
+    cout << fibDC(n) << endl;
 }

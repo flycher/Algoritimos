@@ -10,31 +10,32 @@ possível, deixamos o caiaquista mais pesado sozinho e continuamos.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-typedef std::vector<std::pair<int, int>> vpii;
+typedef vector<pair<int, int>> vpii;
 
 vpii caiaquistas(int P[], int n,int K)
 {
-    std::sort(P, P + n);
+    sort(P, P + n);
     vpii caiaques;
     int i = 0, j = n - 1;
     while(i < j)
     {
         if(P[j] + P[i] <= K)
         {
-            caiaques.push_back(std::make_pair(P[j], P[i]));
+            caiaques.push_back(make_pair(P[j], P[i]));
             i++;
             j--;
         }
         else
         {
-            caiaques.push_back(std::make_pair(P[j], 0));
+            caiaques.push_back(make_pair(P[j], 0));
             j--;
         }
     }
     if(i == j)
     {
-        caiaques.push_back(std::make_pair(P[j], 0));
+        caiaques.push_back(make_pair(P[j], 0));
     }
     return caiaques;
 }
@@ -42,11 +43,11 @@ vpii caiaquistas(int P[], int n,int K)
 int main()
 {
     int n, k;
-    std::cin >> n >> k;
+    cin >> n >> k;
     int P[n];
     for(int i = 0; i < n; i++)
-        std::cin >> P[i];
+        cin >> P[i];
     for(auto &c: caiaquistas(P, n, k))
-        std::cout << c.first << ',' << c.second << ' ';
-    std::cout << std::endl;
+        cout << c.first << ',' << c.second << ' ';
+    cout << endl;
 }

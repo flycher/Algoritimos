@@ -6,6 +6,7 @@ Seu algoritmo deve ter complexidade Θ(lg n)
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 // Retorna o indice de x ou de seu antecessor em V
 int lower(int V[], int p, int q, int x)
@@ -49,20 +50,20 @@ int upper(int V[], int p, int q, int x)
     return suc;
 }
 
-std::pair<int, int> buscaIntervalo(int V[], int n, int a, int b)
+pair<int, int> buscaIntervalo(int V[], int n, int a, int b)
 {
-    return std::make_pair(upper(V, 0, n, a), lower(V, 0, n, b));
+    return make_pair(upper(V, 0, n, a), lower(V, 0, n, b));
 }
 
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n];
     for(int i = 0; i < n; i++)
-        std::cin >> V[i];
+        cin >> V[i];
     int a, b;
-    std::cin >> a >> b;
-    std::pair<int, int> interv = buscaIntervalo(V, n - 1, a, b);
-    std::cout << '[' << interv.first << ',' << interv.second << ']' << std::endl;
+    cin >> a >> b;
+    pair<int, int> interv = buscaIntervalo(V, n - 1, a, b);
+    cout << '[' << interv.first << ',' << interv.second << ']' << endl;
 }

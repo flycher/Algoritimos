@@ -4,6 +4,7 @@ identidade em V , ou seja, um índice i tal que V [i] = i.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 bool identidade(int V[], int p, int q)
 {
@@ -20,13 +21,13 @@ bool identidade(int V[], int p, int q)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n];
     for(int i = 0; i < n; i++)
-        std::cin >> V[i];
+        cin >> V[i];
     if(identidade(V, 0, n - 1))
-        std::cout << 'V' << std::endl;
+        cout << 'V' << endl;
     else
-        std::cout << 'F' << std::endl;
+        cout << 'F' << endl;
 
 }

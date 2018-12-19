@@ -4,8 +4,9 @@ maior subsequência comum entre as duas sequências X e Y.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-int** lcs(std::string x, std::string y)
+int** lcs(string x, string y)
 {
     int a = x.length(), b = y.length(); // tamanhos das strings
     int** T = new int*[a + 1];
@@ -24,7 +25,7 @@ int** lcs(std::string x, std::string y)
             // caso os caracteres sejam iguais, adicionamos o valor da diagonal superior esquerda + 1
             if(x[i - 1] == y[j - 1]) T[i][j] = T[i - 1][j - 1] + 1;
             // caso contrario, adicionamos o valor maior entre acima e a esquerda
-            else T[i][j] = std::max(T[i - 1][j], T[i][j - 1]);
+            else T[i][j] = max(T[i - 1][j], T[i][j - 1]);
         }
     }
 
@@ -32,12 +33,12 @@ int** lcs(std::string x, std::string y)
     return T;
 }
 
-std::string maior_subsequencia_comum(std::string x, std::string y)
+string maior_subsequencia_comum(string x, string y)
 {
     int **T = lcs(x, y);
     int i = x.length(), j = y.length();
-    std::cout << T[i][j] << std::endl; //t tamanhp da maior subsequencia comum
-    std::string s(T[i][j], '$'); // string em que a subsequencia sera armazenada
+    cout << T[i][j] << endl; //t tamanhp da maior subsequencia comum
+    string s(T[i][j], '$'); // string em que a subsequencia sera armazenada
 
     while(i > 0 && j > 0) // enquanto os indices forem válidos
     {
@@ -59,7 +60,7 @@ std::string maior_subsequencia_comum(std::string x, std::string y)
 
 int main()
 {
-    std::string x, y;
-    std::cin >> x >> y;
-    std::cout << maior_subsequencia_comum(x, y) << std::endl;
+    string x, y;
+    cin >> x >> y;
+    cout << maior_subsequencia_comum(x, y) << endl;
 }

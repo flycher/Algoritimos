@@ -11,17 +11,18 @@ cidade.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-typedef std::vector<std::pair<int, int>> vpii;
+typedef vector<pair<int, int>> vpii;
 
 vpii ciclistas(int A[], int B[], int n)
 {
-    std::sort(A, A + n);
-    std::sort(B, B + n);
+    sort(A, A + n);
+    sort(B, B + n);
     vpii duplas;
     for(int i = 0; i < n; i++)
     {
-        duplas.push_back(std::make_pair(A[i], B[n - i - 1]));
+        duplas.push_back(make_pair(A[i], B[n - i - 1]));
     }
     return duplas;
 }
@@ -29,13 +30,13 @@ vpii ciclistas(int A[], int B[], int n)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int A[n], B[n];
     for(int i = 0; i < n; i++)
-        std::cin >> A[i];
+        cin >> A[i];
     for(int i = 0; i < n; i++)
-        std::cin >> B[i];
+        cin >> B[i];
     for(auto &dupla: ciclistas(A, B, n))
-        std::cout << dupla.first << ',' << dupla.second << ' ';
-    std::cout << std::endl;
+        cout << dupla.first << ',' << dupla.second << ' ';
+    cout << endl;
 }

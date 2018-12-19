@@ -9,8 +9,9 @@ Determine o mínimo de trocas necessárias para tornar uma parentização consis
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-int parenteses(std::string s)
+int parenteses(string s)
 {
     int n = s.size();
     int T[2][n + 1]; // guardaremos os parenteses abrindo na linha 0 e as inversões na 1
@@ -44,7 +45,7 @@ int parenteses(std::string s)
 
 int main()
 {
-    std::string s;
-    std::cin >> s;
-    std::cout << parenteses(s) << std::endl;
+    string s;
+    cin >> s;
+    cout << parenteses(s) << endl;
 }

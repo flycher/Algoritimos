@@ -10,6 +10,7 @@ com os números escolhidos a cada passo destacados.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int remove_lista(int E[], int n){
     int Tmin[n][n]; // guardaremos o maior valor possível das operações
@@ -29,8 +30,8 @@ int remove_lista(int E[], int n){
             int maior = INT_MIN; // maior valor possivel das operações
             for(int k = i; k < j; k++) // testamos todas as operações nessa faixa
             {
-                menor = std::min(menor, Tmin[i][k] - Tmax[k + 1][j]);
-                maior = std::max(maior, Tmax[i][k] - Tmin[k + 1][j]);
+                menor = min(menor, Tmin[i][k] - Tmax[k + 1][j]);
+                maior = max(maior, Tmax[i][k] - Tmin[k + 1][j]);
             }
             Tmin[i][j] = menor; // guardamos o maior valor possivel
             Tmax[i][j] = maior; // guardamos o menor valor possível
@@ -42,10 +43,10 @@ int remove_lista(int E[], int n){
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int v[n];
     for(int i = 0; i < n; i++)
-        std::cin >> v[i];
+        cin >> v[i];
 
-    std::cout << remove_lista(v, n) << std::endl;
+    cout << remove_lista(v, n) << endl;
 }

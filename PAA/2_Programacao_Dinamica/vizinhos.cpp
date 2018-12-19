@@ -16,8 +16,9 @@ disposto de forma que os vizinhos de i são exatamente i − 1 e i + 1,
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-std::vector<int> vizinhos(int v[], int n)
+vector<int> vizinhos(int v[], int n)
 {
     // a matriz de memorização guardará apenas 2 valores para cada elemento
     // o valor da subsequencia incluindo ele, na coluna 0, e sem ele, na coluna 1
@@ -25,13 +26,13 @@ std::vector<int> vizinhos(int v[], int n)
     T[0][0] = v[0];
     T[0][1] = 0;
 
-    std::vector<int> pessoas; // guadará a resposta
+    vector<int> pessoas; // guadará a resposta
     double sem;
 
     for(int i = 1; i < n; i++)
     {
         // o valor atual maximo não incluindo o elemento
-        sem = std::max(T[i - 1][0], T[i - 1][1]);
+        sem = max(T[i - 1][0], T[i - 1][1]);
 
         T[i][0] = T[i - 1][1] + v[i]; // inclui o elemento com o valor do anterior não incluido
         T[i][1] = sem;
@@ -59,13 +60,13 @@ std::vector<int> vizinhos(int v[], int n)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int v[n];
     for(int i = 0; i < n; i++)
-        std::cin >> v[i];
+        cin >> v[i];
 
-    std::vector<int> pessoas = vizinhos(v, n);
+    vector<int> pessoas = vizinhos(v, n);
     for(auto &e: pessoas)
-        std::cout << e << ' ';
-    std::cout << std::endl;
+        cout << e << ' ';
+    cout << endl;
 }

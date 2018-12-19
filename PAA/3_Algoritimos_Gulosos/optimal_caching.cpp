@@ -8,9 +8,10 @@ Jogaremos fora a o posição cujo próximo acesso na computação está o mais n
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 #define INF 99999
 
-typedef std::vector<int> vi;
+typedef vector<int> vi;
 
 bool in_cache(int instrucao, vi & cache)
 {
@@ -73,9 +74,9 @@ int fathest_in_future(int L[], int n, int C)
 int main()
 {
     int n, C;
-    std::cin >> n >> C;
+    cin >> n >> C;
     int L[n];
     for(int i = 0; i < n; i++)
-        std::cin >> L[i];
-    std::cout << fathest_in_future(L, n, C) << std::endl;
+        cin >> L[i];
+    cout << fathest_in_future(L, n, C) << endl;
 }

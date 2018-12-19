@@ -18,6 +18,7 @@ que todas as tarefa tenham finalizado suas execuções.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 typedef struct
 {
@@ -31,21 +32,21 @@ bool ordena(tarefa a, tarefa b)
 
 void* processamento(tarefa* & J, int n)
 {
-    std::sort(J, J + n, ordena);
+    sort(J, J + n, ordena);
 }
 
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     tarefa* J = new tarefa[n];
     for(int i = 0; i < n; i++)
     {
         J[i].t = i + 1;
-        std::cin >> J[i].p >> J[i].f;
+        cin >> J[i].p >> J[i].f;
     }
     processamento(J, n);
     for(int i = 0; i < n; i++)
-        std::cout << J[i].t << ' ';
-    std::cout << std::endl;
+        cout << J[i].t << ' ';
+    cout << endl;
 }

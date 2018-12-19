@@ -21,24 +21,25 @@ sob a mesma regra.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-bool ordena(std::pair<int, double> a, std::pair<int, double> b)
+bool ordena(pair<int, double> a, pair<int, double> b)
 {
     return a.second > b.second;
 }
 
-std::pair<double, std::vector<double>> mochila_fracionaria(double v[], double p[], int n, double M)
+pair<double, vector<double>> mochila_fracionaria(double v[], double p[], int n, double M)
 {
-    std::vector<std::pair<int, double>> itens;
+    vector<pair<int, double>> itens;
     for(int i = 0; i < n; i++)
     {
-        itens.push_back(std::make_pair(i, v[i] / p[i]));
+        itens.push_back(make_pair(i, v[i] / p[i]));
     }
 
-    std::sort(itens.begin(), itens.end(), ordena);
+    sort(itens.begin(), itens.end(), ordena);
 
     double total = 0;
-    std::vector<double> pegar(n, 0);
+    vector<double> pegar(n, 0);
     int i = 0;
     while(i < n)
     {
@@ -57,19 +58,19 @@ std::pair<double, std::vector<double>> mochila_fracionaria(double v[], double p[
         i++;
     }
 
-    return std::make_pair(total, pegar);
+    return make_pair(total, pegar);
 }
 
 int main()
 {
     int M, n;
-    std::cin >> M >> n;
+    cin >> M >> n;
     double v[n], p[n];
     for(int i = 0; i < n; i++)
-        std::cin >> v[i] >> p[i];
-    std::pair<double, std::vector<double>> greedy = mochila_fracionaria(v, p, n, M);
-    std::cout << greedy.first << std::endl;
+        cin >> v[i] >> p[i];
+    pair<double, vector<double>> greedy = mochila_fracionaria(v, p, n, M);
+    cout << greedy.first << endl;
     for(auto &e: greedy.second)
-        std::cout << e << ' ';
-    std::cout << std::endl;
+        cout << e << ' ';
+    cout << endl;
 }

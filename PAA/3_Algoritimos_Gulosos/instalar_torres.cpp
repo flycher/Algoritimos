@@ -11,16 +11,17 @@ Retornaremos uma lista com as posições em que as torres devem ser instaladas.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 bool ordena(int a, int b)
 {
     return a < b;
 }
 
-std::vector<int> instalar_torres(int* & C, int n)
+vector<int> instalar_torres(int* & C, int n)
 {
-    std::sort(C, C + n, ordena);
-    std::vector<int> T;
+    sort(C, C + n, ordena);
+    vector<int> T;
     int alcance = -1;
     for(int i = 0; i < n; i++)
     {
@@ -36,12 +37,12 @@ std::vector<int> instalar_torres(int* & C, int n)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int* C = new int[n];
     for(int i = 0; i < n; i++)
-        std::cin >> C[i];
-    std::vector<int> T = instalar_torres(C, n);
+        cin >> C[i];
+    vector<int> T = instalar_torres(C, n);
     for(auto &e: T)
-        std::cout << e << ' ';
-    std::cout << std::endl;
+        cout << e << ' ';
+    cout << endl;
 }

@@ -10,13 +10,14 @@ a distância de Levenshtein entre elas.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 int dif(char a, char b)
 {
     return a == b ? 0 : 1;
 }
 
-int distanciaDeEdicao(std::string A, std::string B)
+int distanciaDeEdicao(string A, string B)
 {
     int n = A.length(), m = B.length();
     int T[n + 1][m + 1]; // cria a matriz de memorização
@@ -34,7 +35,7 @@ int distanciaDeEdicao(std::string A, std::string B)
             // guardamos o minimo entre os considerar os A[i] e B[j] distantes em 1
             // 'descartando' A[i] ou B[j] e comparando A[i] == A[j] e 'descartando' ambos
             // em dif, se A[i] == B[j], consideramos a distancia entre eles em 0
-            T[i][j] = std::min(std::min(1 + T[i - 1][j], 1 + T[i][j - 1]), dif(A[i - 1], B[j - 1]) + T[i - 1][j - 1]);
+            T[i][j] = min(min(1 + T[i - 1][j], 1 + T[i][j - 1]), dif(A[i - 1], B[j - 1]) + T[i - 1][j - 1]);
         }
     }
 
@@ -43,7 +44,7 @@ int distanciaDeEdicao(std::string A, std::string B)
 
 int main()
 {
-    std::string A, B;
-    std::cin >> A >> B;
-    std::cout << distanciaDeEdicao(A, B) << std::endl;
+    string A, B;
+    cin >> A >> B;
+    cout << distanciaDeEdicao(A, B) << endl;
 }

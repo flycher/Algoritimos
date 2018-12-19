@@ -4,8 +4,9 @@ Insira o tamanho da haste e o preço de cada tamanho.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
-std::pair<int*, int*> corteDeHastesPD(int p[], int n)
+pair<int*, int*> corteDeHastesPD(int p[], int n)
 {
     int *r = new int[n + 1]; // tabela de respostas
     int *s = new int[n + 1]; // tabela de soluções
@@ -24,28 +25,28 @@ std::pair<int*, int*> corteDeHastesPD(int p[], int n)
         }
         r[i] = q;
     }
-    return std::make_pair(r, s); // retorna as duas tabelas
+    return make_pair(r, s); // retorna as duas tabelas
 }
 
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int V[n + 1];
     V[0] = 0;
 
     for(int i = 1; i <= n; i++)
-        std::cin >> V[i];
+        cin >> V[i];
 
-    std::pair<int*, int*> hastes = corteDeHastesPD(V, n);
+    pair<int*, int*> hastes = corteDeHastesPD(V, n);
 
-    std::cout << "Ganho: \n\t[";
+    cout << "Ganho: \n\t[";
     for(int i = 1; i <= n; i++)
-        std::cout << hastes.first[i] << ", ";
-    std::cout << "]\n";
+        cout << hastes.first[i] << ", ";
+    cout << "]\n";
 
-    std::cout << "Primeiro Corte: \n\t[";
+    cout << "Primeiro Corte: \n\t[";
     for(int i = 1; i <= n; i++)
-        std::cout << hastes.second[i] << ", ";
-    std::cout << "]\n";
+        cout << hastes.second[i] << ", ";
+    cout << "]\n";
 }

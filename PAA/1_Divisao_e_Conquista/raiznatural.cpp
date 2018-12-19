@@ -5,6 +5,7 @@ k tal que v^k = n. Sua função deve ter complexidade O(lg n).
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 bool root(int v, int n, int l, int r)
 {
@@ -47,6 +48,6 @@ char raizDC(int v, int n)
 int main()
 {
     int v, n;
-    std::cin >> v >> n;
-    std::cout << raizDC(v, n) << std::endl;
+    cin >> v >> n;
+    cout << raizDC(v, n) << endl;
 }

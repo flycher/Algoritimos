@@ -4,6 +4,7 @@ Calcular x^n, onde x pertence aos reais e n aos naturais.
 */
 
 #include <bits/stdc++.h>
+using namespace std;
 
 long potNatural(int x, int n)
 {
@@ -21,6 +22,6 @@ long potNatural(int x, int n)
 int main()
 {
     int x, n;
-    std::cin >> x >> n;
-    std::cout << potNatural(x, n) << std::endl;
+    cin >> x >> n;
+    cout << potNatural(x, n) << endl;
 }
